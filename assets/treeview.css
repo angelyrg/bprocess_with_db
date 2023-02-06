@@ -1,0 +1,44 @@
+.form {
+    display: flex;
+  }
+  
+  .form > div {
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+  #treeviewDriveC,
+  #treeviewDriveD {
+    margin-top: 10px;
+  }
+  
+  .drive-header {
+    min-height: auto;
+    padding: 0;
+    cursor: default;
+  }
+  
+ .drive-panel {
+    padding: 20px 30px;
+    font-size: 100%;
+    font-weight: bold;
+    border-right: 1px solid rgba(165, 165, 165, 0.4);
+    height: 100%;
+    width: 100%;
+  }
+
+#menu_container{
+    /* background: radial-gradient(50% 330.61% at 0% 100%, #00A5B1 0%, #007687 100%); */
+    background-color: #343444;
+    min-height: 95vh;
+}
+
+#content_container{
+  font-family: initial !important;
+}
+
+/* 
+.treeview-item{
+  background-color: rgb(251, 255, 0);
+  border-radius: 8px;
+} */
