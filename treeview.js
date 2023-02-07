@@ -213,7 +213,7 @@ $(() => {
   function updateSort(idfrom, idto){
     $.ajax({
       method : "POST",
-      url : "controller/process/process.store.php",
+      url : "controller/process/process.sort.php",
       data : {idfrom, idto},
       success: function(resp){
         console.log(resp);
@@ -221,4 +221,5 @@ $(() => {
     });
     
   }
+
 

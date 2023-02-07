@@ -1,14 +1,10 @@
 <?php
-
 require '../../model/Process.php';
 
-$id = $_POST['idfrom'];
-
-$idto = $_POST['idto'];
+$is_directory = $_POST['is_directory'] == "1" ? true : ( $_POST['is_directory'] == "0" ? false : "" );
+$item_name = $_POST['item_name'];
 
 $process = new Process();
-$result = $process->update_parent_id($id, $idto);
-
-echo $result;
+echo $process->insert_new_record($item_name, $is_directory );
 
 ?>

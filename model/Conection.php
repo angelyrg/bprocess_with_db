@@ -9,7 +9,7 @@ class Conexion{
         $this->conexion_db = new mysqli(DB_HOST, DB_USERNAME, DB_PASS, DB_NAME);
 
         if( $this->conexion_db->connect_errno) {
-            echo "Fallo al conectar a MySQL:" . $this->conexion_db->connect_error;
+            echo "Fail to connect MySQL:" . $this->conexion_db->connect_error;
             return;
         }
 

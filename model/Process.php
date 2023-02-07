@@ -17,36 +17,39 @@ class Process extends Conexion
         parent::__construct();
     }
 
-
     public function get_all_processes()
     {
         /*Podemos usar la variable conexion_db gracias a la herencia */
 
         $result = $this->conexion_db->query('SELECT * FROM processes');
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-
-        return $data;
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function get_one_process($id)
     {
         $result = $this->conexion_db->query("SELECT * FROM processes WHERE id = '$id' ");
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-
-        return $data;
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function update_parent_id($id, $idTo)
     {
         //TO DO: Get $idTO value as null
         if ($idTo == 0){
-            $sql = "UPDATE processes SET parentId = null WHERE id = $id ";
+            $sql = "UPDATE processes SET parentId = NULL WHERE id = $id ";
         }else{
             $sql = "UPDATE processes SET parentId = $idTo WHERE id = $id ";
         }
 
-        $result = $this->conexion_db->query($sql);
-        return $result;
+        return $this->conexion_db->query($sql);
+    }
+
+    public function insert_new_record(string $name, bool $isDirectory, $main_file="", $bizagi_folder=""){
+
+        $icon = $isDirectory ? "activefolder" :  "file";
+
+        $sql = "INSERT INTO processes (parentId, name, main_file, bizagi_folder, icon, isDirectory, expanded) VALUES (NULL, '$name', '$main_file', '$bizagi_folder','$icon', '$isDirectory', FALSE ) ";
+
+        return $this->conexion_db->query($sql);
     }
     
 
