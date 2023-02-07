@@ -2,10 +2,10 @@
 
 require '../../model/Process.php';
 
-$id = 4;
+$id = $_GET['id'];
 
 $process = new Process();
-$array_process = $process->get_one_process(4);
+$array_process = $process->get_one_process($id);
 
 echo json_encode($array_process);
 

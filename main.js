@@ -9,8 +9,22 @@ $(() => {
 
     $("#btn_collapse_tree").on("click", () => $("#treeview_content").dxTreeView("collapseAll"));
     $("#btn_expand_tree").on("click", () => $("#treeview_content").dxTreeView("expandAll"));
+    
+
+    
+    //Verify if URL have parameter #
+    const full_url = window.location.href;
+    const process_id = parseInt(full_url.substr(full_url.indexOf('#')+1, full_url.length ));
+
+    if (process_id > 0){
+      updateContent(process_id);
+    }else{
+      console.log("Invalid url");
+    }
 
   });
+  
+  
 
 
   function createTreeView(selector, items) {
@@ -32,6 +46,18 @@ $(() => {
         //   class: "my_treeview"
         // },
 
+        onItemClick: function(e){
+          //Get id from item clicked
+          const selectedItem = e.itemData;
+          //Modify URL
+          const root_url = window.location.href;
+          const url_path = root_url.substr(0, root_url.indexOf('#'));
+          window.history.pushState({},"", url_path + '#' + selectedItem.id)
+          
+          updateContent(selectedItem.id);
+
+        },
+
         onItemSelectionChanged: function(e) {
             const selectedProduct = e.itemData;            
             if(selectedProduct.price) {
@@ -42,15 +68,7 @@ $(() => {
             } else {
                 $("#product-details").addClass("hidden");
             }
-        },
-
-        onItemClick: function(e){
-          const selectedItem = e.itemData;   
-          if ( selectedItem.isDirectory == 0 ){
-            updateContent(selectedItem.id, selectedItem.name);
-          }
         }
-
     });
   }
   
@@ -199,16 +217,6 @@ $(() => {
     return null;
   }
 
-
-  //update main content
-  function updateContent(id, name){
-    $('#content_container').load('content.php', function(e){
-
-      $("#process_title").html(name);
-
-    });
-  }
-
   //Save moved data in database
   function updateSort(idfrom, idto){
     $.ajax({
@@ -222,4 +230,43 @@ $(() => {
     
   }
 
+  //update main content
+  function updateContent(id){
+
+    $.ajax({
+      method : "GET",
+      url : "controller/process/process.show.php",
+      data : {id},
+      beforeSend: function(){
+        $("#icon_loading").removeClass("visually-hidden");
+      },
+      success: function(resp){
+        data = JSON.parse(resp)[0];
+        console.log(data);
+        $("#process_title").html(data.name)
+      },
+      complete: function() {
+        $("#icon_loading").addClass("visually-hidden");
+      },
+
+    });
+  }
+
+  //Get search parameters from URL
+  function getQueryParams(){
+    try{
+        url = window.location.href;
+        query_str = url.substr( url.indexOf('?')+1, url.length );
+        r_params = query_str.split('&');
+        params = {}
+        for( i in r_params){
+            param = r_params[i].split('=');
+            params[ param[0] ] = param[1];
+        }
+        return params;
+    }
+    catch(e){
+       return {};
+    }
+  }
 

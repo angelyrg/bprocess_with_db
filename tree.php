@@ -59,7 +59,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 col-lg-9" id="content_container"></div>
+            <div class="col-md-8 col-lg-9" id="content_container">
+                <div id="icon_loading" class="spinner-border text-secondary visually-hidden" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p id="process_title"></p>
+            </div>
         </div>
     </div>
 
@@ -68,8 +73,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/devextreme/22.2.4/js/dx.all.js" integrity="sha512-aQAJMeqooVJsjLfnQeh5XCKnn8pF+ujBYawvUePQZooZ5PthLF2/bZS1reU+nuGEBYuzrFG1812mxjF09R1T8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="treeview.js"></script>
-    <script src="app.js"></script>
+    <script src="main.js"></script>
+    <script src="new_item.js"></script>
 
 </body>
 </html>
