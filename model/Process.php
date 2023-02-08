@@ -1,10 +1,7 @@
 <?php
 
-//nos conectamos a la base de datos
+//Connect to databse
 require "Conection.php";
-/*Aquí vemos el primer ejemplo de herencia donde la clase Devuelve Productos utiliza
-  aquellas variables y métodos definidas en el archivo conexión php y que estas sean
-   accesibles es decir dependiendo de los modificadores de acceso que esta tenga  */
 
 class Process extends Conexion
 {
@@ -29,13 +26,11 @@ class Process extends Conexion
     {
         $query = $this->conexion_db->query("SELECT * FROM processes WHERE id = '$id' ");
         $process = $query->fetch_all(MYSQLI_ASSOC);
-        
+
         $query = $this->conexion_db->query("SELECT * FROM attached_files WHERE process_id = '$id' ");
         $attached = $query->fetch_all(MYSQLI_ASSOC);
-
-        $data = array_map(null, $process, $attached);
-
-        return ($data);
+        
+        return array_map(null, $process, $attached);
 
     }
 
@@ -51,14 +46,63 @@ class Process extends Conexion
         return $this->conexion_db->query($sql);
     }
 
+    public function update_process($id, string $name, bool $isDirectory)
+    {
+        $icon = $isDirectory ? "folder" :  "textdocument";
+        $sql = "UPDATE processes SET name='$name', icon='$icon', isDirectory='$isDirectory' WHERE id = $id ";
+        
+        if ($this->conexion_db->query($sql) === TRUE) {
+            echo $id;
+        } else {
+            echo "error";
+        }
+    }
+
     public function insert_new_record(string $name, bool $isDirectory, $main_file="", $bizagi_folder=""){
 
-        $icon = $isDirectory ? "activefolder" :  "file";
+        $icon = $isDirectory ? "folder" :  "textdocument";
+        $sql = "INSERT INTO processes (parentId, name, main_file, bizagi_folder, icon, isDirectory) VALUES (NULL, '$name', '$main_file', '$bizagi_folder','$icon', '$isDirectory') ";
 
-        $sql = "INSERT INTO processes (parentId, name, main_file, bizagi_folder, icon, isDirectory, expanded) VALUES (NULL, '$name', '$main_file', '$bizagi_folder','$icon', '$isDirectory', FALSE ) ";
+        if ($this->conexion_db->query($sql) === TRUE) {
+            echo $this->conexion_db->insert_id;
+        } else {
+            echo "error";
+        }
 
-        return $this->conexion_db->query($sql);
     }
+
+    public function destroy_level($id)
+    {
+        // TO DO: Delete all children from the root
+        /*
+        //Delete parent
+        $sql = "DELETE FROM processes WHERE id = $id ";
+        $children = [];
+
+        $flag = true;
+        while ($flag){
+            $temp_children = $this->searchChildren($id);
+
+            if ( count($temp_children) > 0 ){
+                foreach($temp_children as $children_id){
+                    array_push($children, $children_id);
+                }
+            }else{
+                $flag = false;
+                break;
+            }
+        }
+
+        return $children;
+        */
+    }
+
+    public function searchChildren($id){
+        $query = $this->conexion_db->query(" SELECT id FROM processes WHERE parentId=$id ");
+        return $query->fetch_all(MYSQLI_ASSOC);
+    }
+
+
     
 
 }

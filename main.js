@@ -1,43 +1,94 @@
 $(() => {
-  //Get all data from DB through 
-    fetch("controller/process/process.index.php")
-    .then(resp => resp.json())
-    .then((data)=>{
-        createTreeView('#treeview_content', data);  
-        createSortable('#treeview_content', data);
-    });
+  refreshTreeview();
 
-    $("#btn_collapse_tree").on("click", () => $("#treeview_content").dxTreeView("collapseAll"));
-    $("#btn_expand_tree").on("click", () => $("#treeview_content").dxTreeView("expandAll"));
-    
+  $("#btn_collapse_tree").on("click", () => $("#treeview_content").dxTreeView("collapseAll"));
+  $("#btn_expand_tree").on("click", () => $("#treeview_content").dxTreeView("expandAll"));
 
-    
-    //Verify if URL have parameter #
-    const full_url = window.location.href;
-    const process_id = parseInt(full_url.substr(full_url.indexOf('#')+1, full_url.length ));
+  const process_id = getIdURL();
 
-    if (process_id > 0){
-      updateContent(process_id);
-    }else{
-      console.log("Invalid url");
-    }
+  if (process_id > 0){
+    updateContent( process_id );
+  }else{
+    console.log("Invalid url");
+  }
 
+  /* ===CRUD=== */
+  //Insert new register
+  $("#newitem_form").on('submit', function(e){
+    e.preventDefault();
+    $.ajax({
+        url: 'controller/process/process.store.php',
+        type: 'POST',
+        data: $("#newitem_form").serialize(),
+        success: function(resp){
+          if (resp != "error"){
+            let just_added_id = parseInt(resp);
+
+            setIdURL(just_added_id);            
+            refreshTreeview();
+            hideModal('modal_new', 'newitem_form');            
+            updateContent(just_added_id);
+            showToast('liveToast', "New register saved successfully!");
+          }
+        }
+    })
   });
   
-  
+  //Edit register
+  $("#edit_item_form").on('submit', function(e){
+    e.preventDefault();
+    $.ajax({
+        url: 'controller/process/process.update.php',
+        type: 'POST',
+        data: $("#edit_item_form").serialize(),
+        success: function(resp){
+          if (resp != "error"){
+            let just_updated_id = parseInt(resp);          
+            refreshTreeview();
+            hideModal('modal_edit', 'edit_item_form');
+            updateContent(just_updated_id);
+            showToast('liveToast', "Updated successfully!");
+          }
+        }
+    })
+  });
+
+  //Delete item
+  $("#delete_item_form").on('submit', function(e){
+    e.preventDefault();
+    $.ajax({
+        url: 'controller/process/process.destroy.php',
+        type: 'POST',
+        data: $("#delete_item_form").serialize(),
+        success: function(resp){
+          if (resp != "error"){
+            console.log(resp);
+            // let just_updated_id = parseInt(resp);          
+            // refreshTreeview();
+            // hideModal('modal_delete', 'delete_item_form');
+            // updateContent(just_updated_id);
+            // showToast('liveToast', "Deleted successfully!");
+          }
+        }
+    })
+  });
+
+
+});
+
 
 
   function createTreeView(selector, items) {
     $(selector).dxTreeView({
         items,
         dataStructure: 'plain',
-        displayExpr: 'name',        
+        displayExpr: 'name',
         keyExpr: "id",
         parentIdExpr: "parentId",
         
         searchEnabled: true,
         searchMode: "contains",
-        searchExpr: ["name", "main_file"],
+        searchExpr: ["name"],
         noDataText: "No match",
 
         // hint: "Hint",
@@ -47,27 +98,15 @@ $(() => {
         // },
 
         onItemClick: function(e){
-          //Get id from item clicked
+
           const selectedItem = e.itemData;
-          //Modify URL
-          const root_url = window.location.href;
-          const url_path = root_url.substr(0, root_url.indexOf('#'));
-          window.history.pushState({},"", url_path + '#' + selectedItem.id)
-          
-          updateContent(selectedItem.id);
+          const currentId = getIdURL();
 
-        },
+          if (selectedItem.id != currentId ){
+            setIdURL(selectedItem.id)
+            updateContent(selectedItem.id);
+          }
 
-        onItemSelectionChanged: function(e) {
-            const selectedProduct = e.itemData;            
-            if(selectedProduct.price) {
-                $("#product-details").removeClass("hidden");
-                $("#product-details > img").attr("src", selectedProduct.image);
-                $("#product-details > .price").text("$" + selectedProduct.price);
-                $("#product-details > .name").text(selectedProduct.name);
-            } else {
-                $("#product-details").addClass("hidden");
-            }
         }
     });
   }
@@ -232,7 +271,6 @@ $(() => {
 
   //update main content
   function updateContent(id){
-
     $.ajax({
       method : "GET",
       url : "controller/process/process.show.php",
@@ -240,16 +278,30 @@ $(() => {
       beforeSend: function(){
         $("#icon_loading").removeClass("visually-hidden");
       },
+      error: function(){
+        $("#icon_loading").addClass("visually-hidden");
+      },
       success: function(resp){
-        data = JSON.parse(resp)[0];
-        process = data[0];
-        attached = data[1];
+        if ( JSON.parse(resp).length > 0){
+          data = JSON.parse(resp)[0];
+          process = data[0];
+          attached = data[1];
+  
+          // console.log(process);
+          // console.log(attached);
 
-        console.log(process);
-        console.log(attached);
+          //Update all fields about
+          $("#process_title").html(process.name);
 
-        //Update all fields about
-        $("#process_title").html(process.name)
+          //Update edit modal data
+          $("#id_edit").val(process.id);
+          $('#id_delete').val(process.id);
+          $("#item_name_edit").val(process.name);
+          $('#is_directory_edit').val(process.isDirectory);
+
+        }else{
+          console.log("Invalid id");
+        }
 
       },
       complete: function() {
@@ -259,21 +311,42 @@ $(() => {
     });
   }
 
-  //Get search parameters from URL
-  function getQueryParams(){
-    try{
-        url = window.location.href;
-        query_str = url.substr( url.indexOf('?')+1, url.length );
-        r_params = query_str.split('&');
-        params = {}
-        for( i in r_params){
-            param = r_params[i].split('=');
-            params[ param[0] ] = param[1];
-        }
-        return params;
-    }
-    catch(e){
-       return {};
-    }
+  //Get #id from URL
+  function getIdURL(){
+    const full_url = window.location.href;
+    return parseInt(full_url.substr(full_url.indexOf('#')+1, full_url.length ));
   }
 
+
+  //Set #id to URL
+  function setIdURL(id){
+    const root_url = window.location.href;
+    const url_path = root_url.substr(0, root_url.indexOf('#'));
+    window.history.pushState({},"", url_path + '#' + id)
+  }
+
+  //Hide modal
+  function hideModal(modalId, formId){
+    var my_form = document.getElementById(formId);
+    my_form.reset();
+    $("#" + modalId).modal("hide");
+  }
+
+  //Display Toast
+  function showToast(idSelector, message){
+    var toastLive = document.getElementById(idSelector)
+    $("#toastSuccesMessage").html(message);
+    var toast = new bootstrap.Toast(toastLive)
+    toast.show()
+  }
+
+  //Refresh treeview with updated data
+  function refreshTreeview(){
+    fetch("controller/process/process.index.php")
+    .then(resp => resp.json())
+    .then((data)=>{
+      console.log(data);
+        createTreeView('#treeview_content', data);  
+        createSortable('#treeview_content', data);
+    });
+  }
