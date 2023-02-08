@@ -27,8 +27,16 @@ class Process extends Conexion
 
     public function get_one_process($id)
     {
-        $result = $this->conexion_db->query("SELECT * FROM processes WHERE id = '$id' ");
-        return $result->fetch_all(MYSQLI_ASSOC);
+        $query = $this->conexion_db->query("SELECT * FROM processes WHERE id = '$id' ");
+        $process = $query->fetch_all(MYSQLI_ASSOC);
+        
+        $query = $this->conexion_db->query("SELECT * FROM attached_files WHERE process_id = '$id' ");
+        $attached = $query->fetch_all(MYSQLI_ASSOC);
+
+        $data = array_map(null, $process, $attached);
+
+        return ($data);
+
     }
 
     public function update_parent_id($id, $idTo)

@@ -242,8 +242,15 @@ $(() => {
       },
       success: function(resp){
         data = JSON.parse(resp)[0];
-        console.log(data);
-        $("#process_title").html(data.name)
+        process = data[0];
+        attached = data[1];
+
+        console.log(process);
+        console.log(attached);
+
+        //Update all fields about
+        $("#process_title").html(process.name)
+
       },
       complete: function() {
         $("#icon_loading").addClass("visually-hidden");
