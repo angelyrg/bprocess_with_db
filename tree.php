@@ -78,13 +78,6 @@
                             </div>
                         </div>
                         <div>
-
-                            <?php
-                            include("includes/modal_edit_item.php");
-                            include("includes/modal_delete_item.php");
-                            // include("includes/modal_upload_pdf.php");
-                            // include("includes/modal_upload_bizagi_folder.php");
-                            ?>
                             <button type="button" class="btn btn-outline-danger btn-sm rounded-pill" id="btn_modal_delete" data-bs-toggle="modal" data-bs-target="#modal_delete">
                                 <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete
                             </button>
@@ -116,7 +109,7 @@
                         <div class="tab-pane fade show active " id="nav-pdf" role="tabpanel" aria-labelledby="nav-pdf-tab">
                             <div class="container pt-0 d-flex align-items-center justify-content-center rounded-3" id="pdf_content">
 
-                                <iframe src="../upload/pdfs/..." width="100%" id="pdf_viewer" title="PDF viewer" hidden></iframe>
+                                <iframe src="" width="100%" id="pdf_viewer" title="PDF viewer" class=""></iframe>
                                 
                                 <div class="text-center" id="no_pdf_viewer">
                                     <img src="assets/imgs/no-file.svg" alt="File not found" class="img-fluid">
@@ -169,8 +162,14 @@
         </div>
     </div>
 
-    <?php 
+    <?php
+    //MODALS
     include("includes/modal_new_item.php");
+    include("includes/modal_edit_item.php");
+    include("includes/modal_delete_item.php");
+    include("includes/modal_upload_pdf.php");
+
+    //TOASTS
     include("includes/toast.php");
     ?>
 

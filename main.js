@@ -1,6 +1,6 @@
 $(() => {
   refreshTreeview();
-
+  
   $("#btn_collapse_tree").on("click", () => $("#treeview_content").dxTreeView("collapseAll"));
   $("#btn_expand_tree").on("click", () => $("#treeview_content").dxTreeView("expandAll"));
 
@@ -13,7 +13,7 @@ $(() => {
   }
 
   /* ===CRUD=== */
-  //Insert new register
+  //Insert new record
   $("#newitem_form").on('submit', function(e){
     e.preventDefault();
     $.ajax({
@@ -26,15 +26,15 @@ $(() => {
 
             setIdURL(just_added_id);            
             refreshTreeview();
-            hideModal('modal_new', 'newitem_form');            
+            hideModal('#modal_new', 'newitem_form');            
             updateContent(just_added_id);
-            showToast('liveToast', "New register saved successfully!");
+            showToast('liveToast', "New record saved successfully!");
           }
         }
     })
   });
   
-  //Edit register
+  //Edit record
   $("#edit_item_form").on('submit', function(e){
     e.preventDefault();
     $.ajax({
@@ -45,7 +45,7 @@ $(() => {
           if (resp != "error"){
             let just_updated_id = parseInt(resp);          
             refreshTreeview();
-            hideModal('modal_edit', 'edit_item_form');
+            hideModal('#modal_edit', 'edit_item_form');
             updateContent(just_updated_id);
             showToast('liveToast', "Updated successfully!");
           }
@@ -53,7 +53,7 @@ $(() => {
     })
   });
 
-  //Delete item
+  //Delete record
   $("#delete_item_form").on('submit', function(e){
     e.preventDefault();
     $.ajax({
@@ -62,20 +62,46 @@ $(() => {
         data: $("#delete_item_form").serialize(),
         success: function(resp){
           if (resp != "error"){
-            console.log(resp);
-            // let just_updated_id = parseInt(resp);          
-            // refreshTreeview();
-            // hideModal('modal_delete', 'delete_item_form');
-            // updateContent(just_updated_id);
-            // showToast('liveToast', "Deleted successfully!");
+            let just_deleted_parent_id = parseInt(resp);          
+            refreshTreeview();
+            hideModal('#modal_delete', 'delete_item_form');
+            updateContent(just_deleted_parent_id);
+            showToast('liveToast', "Deleted successfully!");
           }
         }
     })
   });
 
+  //Upload PDF  
+  $("#pdf_form").on('submit', function (e) {
+    e.preventDefault();
+    console.log("Submit stoped");
+    var parameters = new FormData( $("#pdf_form")[0] );
+
+    $.ajax({
+      url : "controller/pdf/pdf.upload.php",
+      method : "POST",
+      data: parameters,
+      processData: false,
+      contentType: false,
+      beforeSend: function(){
+        $("#btn_upload_pdf").html( `<div class="spinner-border spinner-border-sm text-secondary" role="status"></div> Uploading..` )
+      },
+      success: function(resp){
+        console.log(resp);
+        hideModal('#modal_upload_pdf', 'pdf_form');
+        updateContent(resp);
+        showToast('liveToast', "Main PDF file uploaded successfully!");        
+      },
+      complete: function(resp){
+        $("#btn_upload_pdf").html(`<i class="fa fa-upload" aria-hidden="true"></i> Upload file`);
+      }
+
+    });
+
+  })
 
 });
-
 
 
   function createTreeView(selector, items) {
@@ -296,8 +322,19 @@ $(() => {
           //Update edit modal data
           $("#id_edit").val(process.id);
           $('#id_delete').val(process.id);
+          $('#pdf_process_id').val(process.id);
+          $('#id_delete_parent').val(process.parentId);
           $("#item_name_edit").val(process.name);
           $('#is_directory_edit').val(process.isDirectory);
+          
+          if ( process.main_file != ""){
+            $('#no_pdf_viewer').hide();
+            $('#pdf_viewer').attr("src", "upload/pdfs/"+process.main_file);
+            $('#pdf_viewer').show();            
+          }else{
+            $('#pdf_viewer').hide();
+            $('#no_pdf_viewer').show();
+          }
 
         }else{
           console.log("Invalid id");
@@ -326,15 +363,15 @@ $(() => {
   }
 
   //Hide modal
-  function hideModal(modalId, formId){
+  function hideModal(modalSelector, formId){
     var my_form = document.getElementById(formId);
     my_form.reset();
-    $("#" + modalId).modal("hide");
+    $(modalSelector).modal("hide");
   }
 
   //Display Toast
-  function showToast(idSelector, message){
-    var toastLive = document.getElementById(idSelector)
+  function showToast(toastId, message){
+    var toastLive = document.getElementById(toastId)
     $("#toastSuccesMessage").html(message);
     var toast = new bootstrap.Toast(toastLive)
     toast.show()
@@ -345,8 +382,7 @@ $(() => {
     fetch("controller/process/process.index.php")
     .then(resp => resp.json())
     .then((data)=>{
-      console.log(data);
-        createTreeView('#treeview_content', data);  
+        createTreeView('#treeview_content', data);
         createSortable('#treeview_content', data);
     });
   }

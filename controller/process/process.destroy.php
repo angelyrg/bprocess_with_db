@@ -3,9 +3,11 @@
 require '../../model/Process.php';
 
 $id = $_POST['id_delete'];
+$parent_id = $_POST['id_delete_parent'];
 
 $process = new Process();
-//echo $process->destroy_level($id);
-var_dump($process->destroy_level($id));
+$result = $process->destroy($id);
+
+echo ($result != "error") ? $parent_id : "error";
 
 ?>

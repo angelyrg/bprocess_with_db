@@ -10,6 +10,7 @@
 
           <div class="mb-3">
             <input type="hidden" class="form-control" id="id_delete" name="id_delete" required >
+            <input type="text" class="form-control" id="id_delete_parent" name="id_delete_parent">
           </div>
 
           <div class="text-center pt-0 px-5">

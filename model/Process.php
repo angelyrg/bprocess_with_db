@@ -34,6 +34,18 @@ class Process extends Conexion
 
     }
 
+    public function update_process($id, string $name, bool $isDirectory)
+    {
+        $icon = $isDirectory ? "folder" :  "textdocument";
+        $sql = "UPDATE processes SET name='$name', icon='$icon', isDirectory='$isDirectory' WHERE id = $id ";
+        
+        if ($this->conexion_db->query($sql) === TRUE) {
+            return $id;
+        } else {
+            return "error";
+        }
+    }
+
     public function update_parent_id($id, $idTo)
     {
         //TO DO: Get $idTO value as null
@@ -46,16 +58,10 @@ class Process extends Conexion
         return $this->conexion_db->query($sql);
     }
 
-    public function update_process($id, string $name, bool $isDirectory)
+    public function update_main_file($id, string $file_name)
     {
-        $icon = $isDirectory ? "folder" :  "textdocument";
-        $sql = "UPDATE processes SET name='$name', icon='$icon', isDirectory='$isDirectory' WHERE id = $id ";
-        
-        if ($this->conexion_db->query($sql) === TRUE) {
-            echo $id;
-        } else {
-            echo "error";
-        }
+        $sql = "UPDATE processes SET main_file='$file_name' WHERE id = $id";
+        return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
     }
 
     public function insert_new_record(string $name, bool $isDirectory, $main_file="", $bizagi_folder=""){
@@ -64,45 +70,23 @@ class Process extends Conexion
         $sql = "INSERT INTO processes (parentId, name, main_file, bizagi_folder, icon, isDirectory) VALUES (NULL, '$name', '$main_file', '$bizagi_folder','$icon', '$isDirectory') ";
 
         if ($this->conexion_db->query($sql) === TRUE) {
-            echo $this->conexion_db->insert_id;
+            return $this->conexion_db->insert_id;
         } else {
-            echo "error";
+            return "error";
         }
 
     }
 
-    public function destroy_level($id)
+    public function destroy($id)
     {
         // TO DO: Delete all children from the root
-        /*
-        //Delete parent
-        $sql = "DELETE FROM processes WHERE id = $id ";
-        $children = [];
-
-        $flag = true;
-        while ($flag){
-            $temp_children = $this->searchChildren($id);
-
-            if ( count($temp_children) > 0 ){
-                foreach($temp_children as $children_id){
-                    array_push($children, $children_id);
-                }
-            }else{
-                $flag = false;
-                break;
-            }
+        $query = "DELETE FROM processes WHERE id = $id ";        
+        if ($this->conexion_db->query($query) === TRUE) {
+            return $id;
+        } else {
+            return "error";
         }
-
-        return $children;
-        */
     }
-
-    public function searchChildren($id){
-        $query = $this->conexion_db->query(" SELECT id FROM processes WHERE parentId=$id ");
-        return $query->fetch_all(MYSQLI_ASSOC);
-    }
-
-
     
 
 }
