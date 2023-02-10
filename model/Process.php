@@ -64,6 +64,12 @@ class Process extends Conexion
         return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
     }
 
+    public function update_bizagi_folder($id, string $bizagi_folder)
+    {
+        $sql = "UPDATE processes SET bizagi_folder='$bizagi_folder' WHERE id = $id";
+        return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
+    }
+
     public function insert_new_record(string $name, bool $isDirectory, $main_file="", $bizagi_folder=""){
 
         $icon = $isDirectory ? "folder" :  "textdocument";
@@ -86,6 +92,11 @@ class Process extends Conexion
         } else {
             return "error";
         }
+    }
+    public function remove_pdf($id)
+    {
+        $sql = "UPDATE processes SET main_file='' WHERE id = $id";
+        return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
     }
     
 

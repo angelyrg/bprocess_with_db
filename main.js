@@ -7,15 +7,13 @@ $(() => {
   const process_id = getIdURL();
 
   if (process_id > 0){
-    $("#process_info").show();
-    $("#process_home").hide();
+    $("#process_info").removeClass("d-none");
+    $("#process_home").addClass("d-none");
     updateContent( process_id );
   }else{
     console.log("Invalid url");
-    process_home
-    $("#process_home").show();
-    $("#process_info").hide();
-
+    $("#process_home").removeClass("d-none");
+    $("#process_info").addClass("d-none");
   }
 
   /* ===CRUD=== */
@@ -84,7 +82,7 @@ $(() => {
     var parameters = new FormData( $("#pdf_form")[0] );
 
     $.ajax({
-      url : "controller/pdf/pdf.upload.php",
+      url : "controller/process/process.pdf_upload.php",
       method : "POST",
       data: parameters,
       processData: false,
@@ -126,7 +124,7 @@ $(() => {
         console.log(resp);
         hideModal('#modal_upload_attach', 'form_attach');
         updateContent(resp);
-        showToast('liveToast', "Attachment files uploaded successfully!");        
+        showToast('liveToast', "Attachment files uploaded successfully!");
       },
       complete: function(resp){
         $("#btn_save_attach").html(`<i class="fa fa-upload" aria-hidden="true"></i> Upload files`);
@@ -134,6 +132,19 @@ $(() => {
 
     });
   })
+
+  //Upload Bizagi Folder
+  /** 
+   * assets/js/upload_bizagi.js 
+   * */
+  // $("#btn_close_bizagi_modal").on('click', function(){
+
+  //   console.log("Modal Closed");
+  
+  //   var input_attachment = document.getElementById("close_attached_modal");
+  //   input_attachment.reset();
+  // });
+
 });
 
 
@@ -147,7 +158,7 @@ $(() => {
         
         searchEnabled: true,
         searchMode: "contains",
-        searchExpr: ["name"],
+        searchExpr: ["name", "description"],
         noDataText: "No data to display",
 
         // hint: "Hint",
@@ -157,15 +168,12 @@ $(() => {
         // },
 
         onItemClick: function(e){
-
           const selectedItem = e.itemData;
           const currentId = getIdURL();
-
           if (selectedItem.id != currentId ){
             setIdURL(selectedItem.id)
             updateContent(selectedItem.id);
           }
-
         }
     });
   }
@@ -347,11 +355,12 @@ $(() => {
           attached = data[1];
   
           //Hide welcome display and show process info
-          $("#process_info").show();
-          $("#process_home").hide();
+          $("#process_info").removeClass("d-none");
+          $("#process_home").addClass("d-none");
 
           //Update all fields about
           $("#process_title").html(process.name);
+          $("#process_description").html(process.description);
 
           //Update edit modal data
           $("#id_edit").val(process.id);
@@ -359,23 +368,43 @@ $(() => {
           $('#pdf_process_id').val(process.id);
           $('#id_delete_parent').val(process.parentId);
           $('#process_id_attach').val(process.id);
+          $('#process_id_bizagi').val(process.id);
           $("#item_name_edit").val(process.name);
           $('#is_directory_edit').val(process.isDirectory);
           
-
-          if ( process.main_file != ""){
-            $('#no_pdf_viewer').hide();
-            $('#pdf_viewer').attr("src", "upload/pdfs/"+process.main_file);
-            $('#pdf_viewer').show();            
+          //Bizagi folder
+          if ( process.bizagi_folder != ""){
+            $('#link_bizagi_diagram').attr("href", `upload/bizagi/${process.bizagi_folder}/index.html`);          
+            $('#link_bizagi_diagram').show();
           }else{
-            $('#pdf_viewer').hide();
-            $('#no_pdf_viewer').show();
+            $('#link_bizagi_diagram').hide();
+            $('#link_bizagi_diagram').attr("href", "");
+          }
+
+          //PDF file viewer
+          if ( process.main_file != ""){
+            $('#no_pdf_viewer').addClass("d-none");
+            $('#pdf_viewer').attr("src", "upload/pdfs/"+process.main_file+"#view=FitH");
+            $('#pdf_viewer_content').removeClass("d-none");
+          }else{
+            $('#no_pdf_viewer').removeClass("d-none");
+            $('#pdf_viewer').attr("src", "");
+            $('#pdf_viewer_content').addClass("d-none");
+          }
+
+          //Bizagi viewer
+          if ( process.bizagi_folder != ""){
+            $('#bizagi_viewer').attr("src", `upload/bizagi/${process.bizagi_folder}/index.html`);
+            $('#no_bizagi_viewer').addClass("d-none");
+            $('#bizagi_viewer_content').removeClass("d-none");
+          }else{
+            $('#bizagi_viewer').attr("src", "");
+            $('#no_bizagi_viewer').removeClass("d-none");
+            $('#bizagi_viewer_content').addClass("d-none");
           }
 
           //List Attached files
-          //console.log(attached)
-          all_attached = '';
-          
+          all_attached = '';          
           attached.forEach(element => {
             all_attached += `
               <tr>
@@ -389,7 +418,8 @@ $(() => {
               </tr>
             `;
           });
-          $("#attached_table").html(all_attached);
+          $("#table_items").html(all_attached);
+          var my_datatable = $('#table_id').DataTable();
 
         }else{
           console.log("Invalid id");
@@ -398,8 +428,7 @@ $(() => {
       },
       complete: function() {
         $("#icon_loading").addClass("visually-hidden");
-      },
-
+      }
     });
   }
 
@@ -408,7 +437,6 @@ $(() => {
     const full_url = window.location.href;
     return parseInt(full_url.substr(full_url.indexOf('#')+1, full_url.length ));
   }
-
 
   //Set #id to URL
   function setIdURL(id){

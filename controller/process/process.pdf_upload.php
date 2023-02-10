@@ -26,3 +26,5 @@ if ( move_uploaded_file($tempPath, $targetFolder) ){
 }else{
     echo "cant upload";
 } 
+
+?>
