@@ -106,6 +106,7 @@
                         <a class="nav-link btn text-center my_btn" id="nav-attach-tab" data-bs-toggle="tab" href="#nav-attach" role="tab" aria-controls="nav-attach" aria-selected="false">Attached files</a>
                     </nav>
                     <div class="tab-content " id="nav-tabContent">
+                        <!-- PDF tab -->
                         <div class="tab-pane fade show active " id="nav-pdf" role="tabpanel" aria-labelledby="nav-pdf-tab">
                             <div class="container pt-0 d-flex align-items-center justify-content-center rounded-3" id="pdf_content">
 
@@ -121,6 +122,7 @@
                                 
                             </div>
                         </div>
+
                         <div class="tab-pane fade " id="nav-attach" role="tabpanel" aria-labelledby="nav-attach-tab">
                             <div class="d-flex justify-content-between align-items-center my-2 ">
                                 <div class="text-info">Atachment files</div>
@@ -128,7 +130,6 @@
                                     <i class="fa fa-plus" aria-hidden="true"></i> Add file
                                 </button>
 
-                                <?php //include("includes/modal_upload_attach.php"); ?>
                             </div>
                             <div class="table-responsive">
                                 <table class="table" id="table_id" summary="Attached files">
@@ -168,10 +169,12 @@
     include("includes/modal_edit_item.php");
     include("includes/modal_delete_item.php");
     include("includes/modal_upload_pdf.php");
+    include("includes/modal_upload_attach.php");
 
     //TOASTS
     include("includes/toast.php");
     ?>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>

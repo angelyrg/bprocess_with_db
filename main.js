@@ -75,7 +75,6 @@ $(() => {
   //Upload PDF  
   $("#pdf_form").on('submit', function (e) {
     e.preventDefault();
-    console.log("Submit stoped");
     var parameters = new FormData( $("#pdf_form")[0] );
 
     $.ajax({
@@ -96,6 +95,36 @@ $(() => {
       complete: function(resp){
         $("#btn_upload_pdf").html(`<i class="fa fa-upload" aria-hidden="true"></i> Upload file`);
       }
+
+    });
+
+  })
+
+  //Upload Attaches  
+  $("#form_attach").on('submit', function (e) {
+    e.preventDefault();
+    console.log("Attach submit stoped");
+
+    var attachments = new FormData( $("#form_attach")[0] );
+
+    $.ajax({
+      url : "controller/attach/attach.upload.php",
+      method : "POST",
+      data: attachments,
+      processData: false,
+      contentType: false,
+      beforeSend: function(){
+        $("#btn_save_attach").html( `<div class="spinner-border spinner-border-sm text-secondary" role="status"></div> Uploading..` )
+      },
+      success: function(resp){
+        console.log(resp);
+        hideModal('#modal_upload_attach', 'form_attach');
+        updateContent(resp);
+        showToast('liveToast', "Attachment files uploaded successfully!");        
+      },
+      complete: function(resp){
+        $("#btn_save_attach").html(`<i class="fa fa-upload" aria-hidden="true"></i> Upload files`);
+      } 
 
     });
 
@@ -324,6 +353,7 @@ $(() => {
           $('#id_delete').val(process.id);
           $('#pdf_process_id').val(process.id);
           $('#id_delete_parent').val(process.parentId);
+          $('#process_id_attach').val(process.id);
           $("#item_name_edit").val(process.name);
           $('#is_directory_edit').val(process.isDirectory);
           
