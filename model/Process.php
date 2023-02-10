@@ -28,7 +28,7 @@ class Process extends Conexion
         $process = $query->fetch_all(MYSQLI_ASSOC);
 
         $query = $this->conexion_db->query("SELECT * FROM attached_files WHERE process_id = '$id' ");
-        $attached = $query->fetch_all(MYSQLI_ASSOC);
+        $attached[] = $query->fetch_all(MYSQLI_ASSOC);
         
         return array_map(null, $process, $attached);
 

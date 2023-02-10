@@ -1,26 +1,41 @@
 <?php
-require '../../model/Process.php';
-$process = new Process();
+require '../../model/Attachment.php';
+$att = new Attachment();
 
-//Upload file to server
 $process_id = $_POST["process_id_attach"];
 $files_post = $_FILES["attach_files"];
 $files_keys = array_keys($files_post);
 
 $files = array();
-$c = count( $files_post["name"] );
+$files_lenght = count( $files_post["name"] );
 
-for ($i=0; $i < $c; $i++) { 
+//Create the folder is it doesn't exists
+$attachFolder = '../../upload/attach/';
+if (!file_exists($attachFolder)) {
+    mkdir($attachFolder, 0777, true);
+}
+
+//Sort file info into an array
+for ($i=0; $i < $files_lenght; $i++) { 
     foreach ($files_keys as $key) {
         $files[$i][$key] = $files_post[$key][$i];
     }
 }
 
+//Foreach new array, move and save in DB
 foreach ($files as $fileID => $value) {
-    $file_content = file_get_contents($value['temp_name']);
-    file_put_contents("../../upload/attached/" . $value['name'], $file_content);
+    $fileName = $value['tmp_name'];
+    $file_content = file_get_contents($fileName);
+
+    $fileExt = pathinfo($value['name'], PATHINFO_EXTENSION);
+    $newFileName = pathinfo($value['name'], PATHINFO_FILENAME)."_".time().".".$fileExt;
+
+    //If file was moved into server, save info in DB
+    if (file_put_contents($attachFolder . $newFileName, $file_content)){
+        $att->insert_new($value['name'], $newFileName, $process_id);
+    }
+
 }
 
-
-var_dump($process_id);
-
+//Return Process ID
+echo $process_id;

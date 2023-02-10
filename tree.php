@@ -16,7 +16,7 @@
 <body>
     <nav class="navbar navbar-expand-lg my_navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="">
                 <img src="assets/imgs/bitel.svg" alt="Bitel" class="img-fluid"> <span class="fw-bold">Admin</span>
             </a>
             <div class="d-flex align-items-center">
@@ -64,6 +64,15 @@
                 </div>
             </div>
             <div class="col-md-8 col-lg-9" id="content_container">
+
+                <!-- Home Main info -->
+                <div class="container-fluid" id="process_home">
+                    <div class="row">
+                        <div class="col-12 border border-success border rounded-3 text-center p-5">
+                            <h3>Welcome</h3>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- main process info -->
                 <div class="container-fluid" id="process_info">
@@ -148,7 +157,7 @@
                                                 <a href="attach.destroy.php" class="btn btn-outline-danger btn-sm rounded-pill" onclick="if(confirm('Are you sure to delete this item?') === false) event.preventDefault();">
                                                     <i class="fa fa-trash" aria-hidden="true"></i> Remove
                                                 </a>
-                                                <a href="../upload/attached/" class="btn btn-sm btn-outline-dark rounded-pill" download>
+                                                <a href="" class="btn btn-sm btn-outline-dark rounded-pill" download>
                                                     <i class="fa-solid fa-download" aria-hidden="true"></i> Download
                                                 </a>
                                             </td>
@@ -159,6 +168,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

@@ -11,7 +11,12 @@ $nameFile = $_FILES["pdf_file_name"]["name"];
 $fileExt = pathinfo($nameFile, PATHINFO_EXTENSION);
 $newFileName = "pdf_".time().".".$fileExt;
 
-$targetFolder = "../../upload/pdfs/".$newFileName;
+$pdfFolder = '../../upload/pdfs/';
+if (!file_exists($pdfFolder)) {
+    mkdir($pdfFolder, 0777, true);
+}
+
+$targetFolder = $pdfFolder.$newFileName;
 
 if ( move_uploaded_file($tempPath, $targetFolder) ){    
     $result = $process->update_main_file($process_id, $newFileName);

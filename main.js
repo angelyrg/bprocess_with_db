@@ -7,9 +7,15 @@ $(() => {
   const process_id = getIdURL();
 
   if (process_id > 0){
+    $("#process_info").show();
+    $("#process_home").hide();
     updateContent( process_id );
   }else{
     console.log("Invalid url");
+    process_home
+    $("#process_home").show();
+    $("#process_info").hide();
+
   }
 
   /* ===CRUD=== */
@@ -124,12 +130,10 @@ $(() => {
       },
       complete: function(resp){
         $("#btn_save_attach").html(`<i class="fa fa-upload" aria-hidden="true"></i> Upload files`);
-      } 
+      }
 
     });
-
   })
-
 });
 
 
@@ -144,7 +148,7 @@ $(() => {
         searchEnabled: true,
         searchMode: "contains",
         searchExpr: ["name"],
-        noDataText: "No match",
+        noDataText: "No data to display",
 
         // hint: "Hint",
 
@@ -342,8 +346,9 @@ $(() => {
           process = data[0];
           attached = data[1];
   
-          // console.log(process);
-          // console.log(attached);
+          //Hide welcome display and show process info
+          $("#process_info").show();
+          $("#process_home").hide();
 
           //Update all fields about
           $("#process_title").html(process.name);
@@ -357,6 +362,7 @@ $(() => {
           $("#item_name_edit").val(process.name);
           $('#is_directory_edit').val(process.isDirectory);
           
+
           if ( process.main_file != ""){
             $('#no_pdf_viewer').hide();
             $('#pdf_viewer').attr("src", "upload/pdfs/"+process.main_file);
@@ -365,6 +371,25 @@ $(() => {
             $('#pdf_viewer').hide();
             $('#no_pdf_viewer').show();
           }
+
+          //List Attached files
+          //console.log(attached)
+          all_attached = '';
+          
+          attached.forEach(element => {
+            all_attached += `
+              <tr>
+                <td>${element.id}</td>
+                <td>${element.attach_name}</td>
+                <td>                    
+                    <a href="upload/attach/${element.attach_file}" class="btn btn-sm btn-outline-dark rounded-pill" download>
+                        <i class="fa-solid fa-download" aria-hidden="true"></i> Download
+                    </a>
+                </td>
+              </tr>
+            `;
+          });
+          $("#attached_table").html(all_attached);
 
         }else{
           console.log("Invalid id");
