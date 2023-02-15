@@ -16,7 +16,7 @@ $(() => {
     $("#process_info").addClass("d-none");
   }
 
-  /* ===CRUD=== */
+  /** ===CRUD=== */
   //Insert new record
   $("#newitem_form").on('submit', function(e){
     e.preventDefault();
@@ -132,19 +132,6 @@ $(() => {
 
     });
   })
-
-  //Upload Bizagi Folder
-  /** 
-   * assets/js/upload_bizagi.js 
-   * */
-  // $("#btn_close_bizagi_modal").on('click', function(){
-
-  //   console.log("Modal Closed");
-  
-  //   var input_attachment = document.getElementById("close_attached_modal");
-  //   input_attachment.reset();
-  // });
-
 });
 
 
@@ -155,7 +142,7 @@ $(() => {
         displayExpr: 'name',
         keyExpr: "id",
         parentIdExpr: "parentId",
-        
+    
         searchEnabled: true,
         searchMode: "contains",
         searchExpr: ["name", "description"],
@@ -163,12 +150,9 @@ $(() => {
 
         // hint: "Hint",
 
-        // elementAttr: {
-        //   class: "my_treeview"
-        // },
-
         onItemClick: function(e){
           const selectedItem = e.itemData;
+
           const currentId = getIdURL();
           if (selectedItem.id != currentId ){
             setIdURL(selectedItem.id)
@@ -349,11 +333,11 @@ $(() => {
         $("#icon_loading").addClass("visually-hidden");
       },
       success: function(resp){
-        if ( JSON.parse(resp).length > 0){
-          data = JSON.parse(resp)[0];
-          process = data[0];
-          attached = data[1];
-  
+        let all_data = JSON.parse(resp)[0];
+        if ( all_data.length > 0){
+          let process = all_data[0];
+          let attached = all_data[1];
+
           //Hide welcome display and show process info
           $("#process_info").removeClass("d-none");
           $("#process_home").addClass("d-none");
@@ -404,11 +388,12 @@ $(() => {
           }
 
           //List Attached files
-          all_attached = '';          
+          let all_attached = ``;    
+          let cont = 0;      
           attached.forEach(element => {
             all_attached += `
               <tr>
-                <td>${element.id}</td>
+                <td>${++cont}</td>
                 <td>${element.attach_name}</td>
                 <td>                    
                     <a href="upload/attach/${element.attach_file}" class="btn btn-sm btn-outline-dark rounded-pill" download>
@@ -418,8 +403,9 @@ $(() => {
               </tr>
             `;
           });
+
           $("#table_items").html(all_attached);
-          var my_datatable = $('#table_id').DataTable();
+          $('#table_id').DataTable();
 
         }else{
           console.log("Invalid id");

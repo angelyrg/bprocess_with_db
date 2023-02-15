@@ -7,12 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test enviroment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devextreme/22.2.4/css/dx.material.teal.light.min.css" integrity="sha512-Q7TGbyUKM3/hGtfq/4X1UvCWUvEyVBUFMzQ576eF2VS0TfuSCfJCTl5kvl+VFpLj7J4oZdQUuYIeJ0D17iKNWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="assets/css/bootswatch.css">
     <link rel="stylesheet" href="assets/datatables/datatables.min.css">
     <link rel="stylesheet" href="assets/css/style.scss">
-    <!-- <link rel="stylesheet" href="assets/css/treeview.css"> -->
 </head>
 <body>
     <nav class="navbar navbar-expand-lg my_navbar">
@@ -125,7 +123,7 @@
                                 </div>
                                 
                                 <div class="text-center d-none" id="no_pdf_viewer">
-                                    <img src="assets/imgs/no-file.svg" alt="File not found" class="img-fluid py-5">
+                                    <img src="assets/imgs/no-file.svg" alt="PDF file not found" class="img-fluid py-5">
                                     <p class="text-dark fw-bolder"><small>PDF file is in process to be sign by BOD.</small></p>
                                     <button type="button" class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_upload_pdf">
                                         <i class="fa-solid fa-plus" aria-hidden="true"></i> Upload PDF file
@@ -203,7 +201,7 @@
                                 </div>
                                 
                                 <div class="text-center d-none" id="no_bizagi_viewer">                                    
-                                    <img src="assets/imgs/bizagi_icon.png" alt="Folder not found" class="img-fluid  my-5" width="15%">
+                                    <img src="assets/imgs/bizagi_icon.png" alt="Bizagi not found" class="img-fluid  my-5" width="15%">
                                     <p class="text-dark fw-bolder"><small>There is no Bizagi to display</small></p>
                                     <button type="button" class="btn btn-outline-info rounded-pill" id="btn_upload_bizagi_folder" data-bs-toggle="modal" data-bs-target="#modal_upload_bizagi_folder">
                                         <i class="fa-solid fa-plus" aria-hidden="true"></i> Upload Bizagi Folder
