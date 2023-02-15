@@ -41,7 +41,34 @@ MENU OPTIONS
   align-items: center;
 }
 
+.dx-treeview-search{
+  border-radius: 55px !important;
+}
 
+/* Treeview */
+
+// .dx-item.dx-treeview-item{    
+//   border-radius: 8px;
+//   background-color: white;
+//   margin-top: 12px;
+//   padding-left: 20px;
+//   padding-top: 5px;
+//   padding-bottom: 5px;
+//   display: flex;
+//   align-items: center;
+// }
+
+
+
+.dx-state-focused>.dx-item.dx-treeview-item{
+  background-color: #FFED00;
+  color: #4F4F4F;
+}
+  
+.dx-treeview-node-container-opened {
+  border-left: .5px solid white;
+  border-radius: 8px;
+}
 
 /**
 INFO DETAILS
