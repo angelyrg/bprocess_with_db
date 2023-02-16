@@ -26,6 +26,11 @@
             <input type="text" class="form-control" id="item_name_edit" name="item_name_edit" required autofocus autocomplete="off">
           </div>
 
+          <div class="mb-3 form-group">
+            <label for="item_name" class="form-label">Description</label>
+            <textarea name="item_description_edit" id="item_description_edit" class="form-control" placeholder="Description..." cols="10" rows="4"></textarea>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Close</button>

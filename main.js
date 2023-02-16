@@ -342,19 +342,21 @@ $(() => {
           $("#process_info").removeClass("d-none");
           $("#process_home").addClass("d-none");
 
-          //Update all fields about
+          //Update all fields about in MAIN CONTENT
           $("#process_title").html(process.name);
           $("#process_description").html(process.description);
 
-          //Update edit modal data
+          //Update MODALS
           $("#id_edit").val(process.id);
+          $('#is_directory_edit').val(process.isDirectory);
+          $("#item_name_edit").val(process.name);
+          $("#item_description_edit").val(process.description);
+
           $('#id_delete').val(process.id);
           $('#pdf_process_id').val(process.id);
           $('#id_delete_parent').val(process.parentId);
           $('#process_id_attach').val(process.id);
           $('#process_id_bizagi').val(process.id);
-          $("#item_name_edit").val(process.name);
-          $('#is_directory_edit').val(process.isDirectory);
           
           //Bizagi folder
           if ( process.bizagi_folder != ""){

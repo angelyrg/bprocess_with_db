@@ -19,7 +19,12 @@
 
           <div class="mb-3">
             <label for="item_name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="item_name" name="item_name" required autofocus autocomplete="off">
+            <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Item name" required autofocus autocomplete="off">
+          </div>
+
+          <div class="mb-3 form-group">
+            <label for="item_name" class="form-label">Description</label>
+            <textarea name="item_description" id="item_description" class="form-control" placeholder="Description..." cols="10" rows="4"></textarea>
           </div>
 
         </div>

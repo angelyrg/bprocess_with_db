@@ -34,10 +34,10 @@ class Process extends Conexion
 
     }
 
-    public function update_process($id, string $name, bool $isDirectory)
+    public function update_process($id, string $name, bool $isDirectory, string $description="")
     {
         $icon = $isDirectory ? "folder" :  "textdocument";
-        $sql = "UPDATE processes SET name='$name', icon='$icon', isDirectory='$isDirectory' WHERE id = $id ";
+        $sql = "UPDATE processes SET name='$name', description='$description', icon='$icon', isDirectory='$isDirectory' WHERE id = $id ";
         
         if ($this->conexion_db->query($sql) === TRUE) {
             return $id;
@@ -70,10 +70,10 @@ class Process extends Conexion
         return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
     }
 
-    public function insert_new_record(string $name, bool $isDirectory, $main_file="", $bizagi_folder=""){
+    public function insert_new_record(string $name, bool $isDirectory, $description="", $main_file="", $bizagi_folder=""){
 
         $icon = $isDirectory ? "folder" :  "textdocument";
-        $sql = "INSERT INTO processes (parentId, name, main_file, bizagi_folder, icon, isDirectory) VALUES (NULL, '$name', '$main_file', '$bizagi_folder','$icon', '$isDirectory') ";
+        $sql = "INSERT INTO processes (parentId, name, description, main_file, bizagi_folder, icon, isDirectory) VALUES (NULL, '$name', '$description', '$main_file', '$bizagi_folder','$icon', '$isDirectory') ";
 
         if ($this->conexion_db->query($sql) === TRUE) {
             return $this->conexion_db->insert_id;
