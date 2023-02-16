@@ -23,12 +23,10 @@ picker.addEventListener("change", (e) => {
   var filepath = relativePath.split("/");
   var foldername = filepath[0];
 
-  console.log("FOLDER?: " + relativePath);
-
   // const time = Math.floor(new Date().getTime() / 1000);
   // var foldername = "biz_" + time;
 
-  // Process every single file
+  // Process every single file and upload to server
   for (var i = 0; i < picker.files.length; i++) {
     var file = picker.files[i];
     sendFile(file, file.webkitRelativePath);

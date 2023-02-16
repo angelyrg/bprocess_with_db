@@ -111,11 +111,8 @@
                                             <h4 class="text-center my-2">Main PDF file</h4>
                                         </div>
                                         <div>
-                                            <button type="button" class="btn btn-danger btn-sm rounded-pill" id="btn_update_pdf" data-bs-toggle="modal" data-bs-target="#modal_upload_pdf">
+                                            <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_delete_pdf">
                                                 <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete PDF
-                                            </button>
-                                            <button type="button" class="btn btn-info btn-sm rounded-pill" id="btn_update_pdf" data-bs-toggle="modal" data-bs-target="#modal_upload_pdf">
-                                                <i class="fa-solid fa-plus" aria-hidden="true"></i> Change PDF file
                                             </button>
                                         </div>
                                     </div>
@@ -142,12 +139,12 @@
                                     </div>
                                     <div>
                                         <button type="button" class="btn btn-info btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_upload_attach">
-                                            <i class="fa fa-plus" aria-hidden="true"></i> Add files
+                                            <i class="fa-solid fa-upload" aria-hidden="true"></i> Upload attachment files
                                         </button>
                                     </div>
                                 </div>
 
-                                <div class="table-responsive px-5">
+                                <div class="table-responsive px-0 px-md-5">
                                     <table class="table" id="table_id" summary="Attached files">
                                         <thead>
                                             <tr>
@@ -185,11 +182,8 @@
                                             <h4 class="text-center my-2">Bizagi viewer</h4>
                                         </div>
                                         <div>
-                                            <!-- <button type="button" class="btn btn-danger btn-sm rounded-pill" id="btn_update_pdf" data-bs-toggle="modal" data-bs-target="#modal_upload_pdf">
-                                                <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete bizagi
-                                            </button> -->
-                                            <button type="button" class="btn btn-info btn-sm rounded-pill" id="btn_upload_bizagi_folder" data-bs-toggle="modal" data-bs-target="#modal_upload_bizagi_folder">
-                                                <i class="fa-solid fa-plus" aria-hidden="true"></i> Upload Bizagi Folder
+                                            <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_delete_bizagi">
+                                                <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Bizagi
                                             </button>
                                             <a href="" class="btn btn-info btn-sm rounded-pill" target="_blank" id="link_bizagi_diagram" rel="noopener">
                                                 <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Open in Bizagi
@@ -201,7 +195,7 @@
                                 </div>
                                 
                                 <div class="text-center d-none" id="no_bizagi_viewer">                                    
-                                    <img src="assets/imgs/bizagi_icon.png" alt="Bizagi not found" class="img-fluid  my-5" width="15%">
+                                    <img src="assets/imgs/bizagi_icon.png" alt="Bizagi not found" class="img-fluid my-5" id="bizagi_logo" width="40%">
                                     <p class="text-dark fw-bolder"><small>There is no Bizagi to display</small></p>
                                     <button type="button" class="btn btn-outline-info rounded-pill" id="btn_upload_bizagi_folder" data-bs-toggle="modal" data-bs-target="#modal_upload_bizagi_folder">
                                         <i class="fa-solid fa-plus" aria-hidden="true"></i> Upload Bizagi Folder
@@ -222,6 +216,8 @@
     include("includes/modal_new_item.php");
     include("includes/modal_edit_item.php");
     include("includes/modal_delete_item.php");
+    include("includes/modal_delete_pdf.php");
+    include("includes/modal_delete_bizagi.php");
     include("includes/modal_upload_pdf.php");
     include("includes/modal_upload_attach.php");
     include("includes/modal_upload_bizagi_folder.php");
@@ -229,7 +225,6 @@
     //TOASTS
     include("includes/toast.php");
     ?>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>

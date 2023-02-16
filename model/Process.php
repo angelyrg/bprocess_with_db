@@ -93,12 +93,28 @@ class Process extends Conexion
             return "error";
         }
     }
+
+    public function get_bizagi_folder_name($id){
+        $result = $this->conexion_db->query("SELECT bizagi_folder FROM processes WHERE id='$id' ");
+        return $result->fetch_all(MYSQLI_ASSOC)[0]["bizagi_folder"];
+    }
+
+    public function get_main_file_name($id){
+        $result = $this->conexion_db->query("SELECT main_file FROM processes WHERE id='$id' ");
+        return $result->fetch_all(MYSQLI_ASSOC)[0]["main_file"];
+    }
+
     public function remove_pdf($id)
     {
         $sql = "UPDATE processes SET main_file='' WHERE id = $id";
         return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
     }
-    
+
+    public function remove_bizagi($id)
+    {
+        $sql = "UPDATE processes SET bizagi_folder='' WHERE id = $id";
+        return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
+    }
 
 }
 

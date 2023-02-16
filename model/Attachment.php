@@ -27,6 +27,11 @@ class Attachment extends Conexion
         }
     }
 
+    public function get_attach_name($id){
+        $result = $this->conexion_db->query("SELECT attach_file FROM attached_files WHERE id='$id' ");
+        return $result->fetch_all(MYSQLI_ASSOC)[0]["attach_file"];
+    }
+
     public function destroy($id)
     {
         $query = "DELETE FROM attached_files WHERE id = $id ";        

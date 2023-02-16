@@ -91,7 +91,6 @@ $(() => {
         $("#btn_upload_pdf").html( `<div class="spinner-border spinner-border-sm text-secondary" role="status"></div> Uploading..` )
       },
       success: function(resp){
-        console.log(resp);
         hideModal('#modal_upload_pdf', 'pdf_form');
         updateContent(resp);
         showToast('liveToast', "Main PDF file uploaded successfully!");        
@@ -104,13 +103,60 @@ $(() => {
 
   })
 
+  //Delete PDF
+  $("#delete_pdf_form").on('submit', function(e){
+    e.preventDefault();
+    $.ajax({
+        url: 'controller/process/process.pdf_destroy.php',
+        type: 'POST',
+        data: $("#delete_pdf_form").serialize(),
+        beforeSend: function(){
+          $("#btn_delete_pdf").html( `<div class="spinner-border spinner-border-sm text-secondary" role="status"></div> Deleting` )
+        },
+        success: function(resp){
+          if (resp != "error"){
+            let just_deleted_parent_id = parseInt(resp);          
+            refreshTreeview();
+            hideModal('#modal_delete_pdf', 'delete_pdf_form');
+            updateContent(just_deleted_parent_id);
+            showToast('liveToast', "PDF file deleted successfully!");
+          }
+        },
+        complete: function(){
+          $("#btn_delete_pdf").html(`Delete`);
+        }
+    })
+  });
+  
+  //Delete BIZAGI
+  $("#delete_bizagi_form").on('submit', function(e){
+    e.preventDefault();
+    $.ajax({
+        url: 'controller/process/process.bizagi_destroy.php',
+        type: 'POST',
+        data: $("#delete_bizagi_form").serialize(),
+        beforeSend: function(){
+          $("#btn_delete_bizagi").html( `<div class="spinner-border spinner-border-sm text-secondary" role="status"></div> Deleting` )
+        },
+        success: function(resp){
+          if (resp != "error"){
+            let just_deleted_parent_id = parseInt(resp);          
+            refreshTreeview();
+            hideModal('#modal_delete_bizagi', 'delete_bizagi_form');
+            updateContent(just_deleted_parent_id);
+            showToast('liveToast', "Bizagi deleted successfully!");
+          }
+        },
+        complete: function(){
+          $("#btn_delete_bizagi").html(`Delete`);
+        }
+    })
+  });
+
   //Upload Attaches  
   $("#form_attach").on('submit', function (e) {
     e.preventDefault();
-    console.log("Attach submit stoped");
-
     var attachments = new FormData( $("#form_attach")[0] );
-
     $.ajax({
       url : "controller/attach/attach.upload.php",
       method : "POST",
@@ -121,7 +167,6 @@ $(() => {
         $("#btn_save_attach").html( `<div class="spinner-border spinner-border-sm text-secondary" role="status"></div> Uploading..` )
       },
       success: function(resp){
-        console.log(resp);
         hideModal('#modal_upload_attach', 'form_attach');
         updateContent(resp);
         showToast('liveToast', "Attachment files uploaded successfully!");
@@ -133,7 +178,6 @@ $(() => {
     });
   })
 });
-
 
   function createTreeView(selector, items) {
     $(selector).dxTreeView({
@@ -152,7 +196,6 @@ $(() => {
 
         onItemClick: function(e){
           const selectedItem = e.itemData;
-
           const currentId = getIdURL();
           if (selectedItem.id != currentId ){
             setIdURL(selectedItem.id)
@@ -313,11 +356,10 @@ $(() => {
       method : "POST",
       url : "controller/process/process.sort.php",
       data : {idfrom, idto},
-      success: function(resp){
-        console.log(resp);
+      success: function(){
+        showToast('liveToast', "Item moved successfuly");
       }
-    });
-    
+    });    
   }
 
   //update main content
@@ -351,13 +393,15 @@ $(() => {
           $('#is_directory_edit').val(process.isDirectory);
           $("#item_name_edit").val(process.name);
           $("#item_description_edit").val(process.description);
-
           $('#id_delete').val(process.id);
           $('#pdf_process_id').val(process.id);
           $('#id_delete_parent').val(process.parentId);
           $('#process_id_attach').val(process.id);
           $('#process_id_bizagi').val(process.id);
           
+          $("#id_process_delete_pdf").val(process.id);
+          $("#id_process_delete_bizagi").val(process.id);
+
           //Bizagi folder
           if ( process.bizagi_folder != ""){
             $('#link_bizagi_diagram').attr("href", `upload/bizagi/${process.bizagi_folder}/index.html`);          
@@ -394,10 +438,13 @@ $(() => {
           let cont = 0;      
           attached.forEach(element => {
             all_attached += `
-              <tr>
+              <tr id="att-${element.id}">
                 <td>${++cont}</td>
                 <td>${element.attach_name}</td>
-                <td>                    
+                <td>
+                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="deleteAttached(${element.id})">
+                        <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete
+                    </button>
                     <a href="upload/attach/${element.attach_file}" class="btn btn-sm btn-outline-dark rounded-pill" download>
                         <i class="fa-solid fa-download" aria-hidden="true"></i> Download
                     </a>
@@ -412,7 +459,6 @@ $(() => {
         }else{
           console.log("Invalid id");
         }
-
       },
       complete: function() {
         $("#icon_loading").addClass("visually-hidden");
@@ -456,4 +502,21 @@ $(() => {
         createTreeView('#treeview_content', data);
         createSortable('#treeview_content', data);
     });
+  }
+
+  //Delete attached file
+  function deleteAttached(id){
+    if (confirm("Are you sure you want delete this attached file?")){
+      $.ajax({
+        url: 'controller/attach/attach.destroy.php',
+        type: 'POST',
+        data: {attached_id : id},
+        success: function(resp){
+          if (resp != "error"){
+            $("#att-"+id).remove();
+            showToast('liveToast', "Attached file deleted successfully!");
+          }
+        }
+      })
+    }
   }

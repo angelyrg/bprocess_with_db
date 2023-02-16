@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
         <div class="p-4">
-          <p>Choose a folder, and all files in that folder will be uploaded recursively.</p>
+          <p>Choose a bizagi folder to upload.</p>
           <div class="picker">
             <!-- After select a folder, execute upload.js script -->
             <input type="file" id="picker" name="fileList" class="form-control" webkitdirectory multiple>

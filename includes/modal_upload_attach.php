@@ -3,14 +3,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalPDFUploading">New attachment file</h5>
+        <h5 class="modal-title" id="modalPDFUploading">Upload attachment files</h5>
         <button type="button" class="btn-close rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="process.update.php" method="POST" id="form_attach" enctype="multipart/form-data">
         <div class="modal-body">
           <input type="hidden" name="process_id_attach" id="process_id_attach" value="<?= $process["id"]; ?>" required >
           <div class="mb-3">
-            <label for="pdf_file" class="form-label">Upload Attached file</label>
+            <p for="pdf_file" class="form-label">You can select multiples files.</p>
             <input type="file" name="attach_files[]" id="attach_files" class="form-control rounded-pill" multiple required >
           </div>
         </div>

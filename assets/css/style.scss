@@ -92,6 +92,18 @@ INFO DETAILS
   height: 75vh;
   border: 1px dashed #007687;
   background-color: #F7FAFD;
+  position: relative;
+}
+
+#no_pdf_viewer, #no_bizagi_viewer{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#bizagi_logo{
+  opacity: 0.8;
 }
 
 #pdf_viewer, #bizagi_viewer{
