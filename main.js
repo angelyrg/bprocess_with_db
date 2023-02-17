@@ -12,6 +12,7 @@ $(() => {
     updateContent( process_id );
   }else{
     console.log("Invalid url");
+    updateExcelViewer()
     $("#process_home").removeClass("d-none");
     $("#process_info").addClass("d-none");
   }
@@ -174,9 +175,51 @@ $(() => {
       complete: function(resp){
         $("#btn_save_attach").html(`<i class="fa fa-upload" aria-hidden="true"></i> Upload files`);
       }
-
     });
   })
+
+  //Update Excel link 
+  $("#excel_form").on('submit', function (e) {
+    e.preventDefault();
+    $.ajax({
+      url : "controller/excel/excel.update.php",
+      method : "POST",
+      data : $("#excel_form").serialize(),
+      success: function(resp){
+        if(resp === "ok"){
+          $("#excel_modal_text").removeClass("text-danger").html("");
+          $("#excel_viewer").removeClass("d-none");
+          hideModal('#modal_excel_link', 'excel_form');
+          showToast('liveToast', "Excel link updated successfully!");
+          updateExcelViewer();
+        }else if (resp === "invalid link"){
+          $("#excel_modal_text").addClass("text-danger").html(`Invalid link.<br>Please make sure your link has been obtained from Google Docs: File/Share/Publish to web/Link`);
+        }else{
+          $("#excel_modal_text").addClass("text-danger").html(`Error`);
+        }
+      }
+    });
+  })
+
+  //Login
+  $("#form_login").on('submit', function (e) {
+    e.preventDefault();
+    $.ajax({
+      url : "controller/auth/login.php",
+      method : "POST",
+      data : $("#form_login").serialize(),
+      success: function(resp){
+        //TO DO: Complete Login System
+        if (resp == "error"){
+          console.log("Esto es un error de login")
+          $("#login_message").html("Username or password incorrect.");
+        }
+        //console.log((resp));
+      }
+    });
+  })
+
+
 });
 
   function createTreeView(selector, items) {
@@ -515,6 +558,38 @@ $(() => {
           if (resp != "error"){
             $("#att-"+id).remove();
             showToast('liveToast', "Attached file deleted successfully!");
+          }
+        }
+      })
+    }
+  }
+
+  //Update Excel  wiever
+  function updateExcelViewer(){
+    $.ajax({
+      method : "GET",
+      url : "controller/excel/excel.index.php",
+      success: function(resp){
+        if (resp != ""){
+          $("#btn_remove_excel_link").removeClass("d-none");
+          $("#excel_viewer").removeClass("d-none").attr("src", resp);
+        }else{
+          $("#btn_remove_excel_link").addClass("d-none");
+          $("#excel_viewer").addClass("d-none").attr("src", "");
+        }
+      }
+    });
+  }
+
+  //Delete excel link
+  function removeExcel(){
+    if (confirm("Are you sure you want to remove the excel?")){
+      $.ajax({
+        url: 'controller/excel/excel.destroy.php',
+        success: function(resp){
+          if (resp === "removed"){
+            showToast('liveToast', "Excel link removed successfully!");
+            updateExcelViewer();
           }
         }
       })

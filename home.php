@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitel Process Admin</title>
+    <title>Bitel Process</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devextreme/22.2.4/css/dx.material.teal.light.min.css" integrity="sha512-Q7TGbyUKM3/hGtfq/4X1UvCWUvEyVBUFMzQ576eF2VS0TfuSCfJCTl5kvl+VFpLj7J4oZdQUuYIeJ0D17iKNWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="assets/css/bootswatch.css">
@@ -20,15 +20,9 @@
                 <img src="assets/imgs/bitel.svg" alt="Bitel" class="img-fluid"> <span class="fw-bold">Admin</span>
             </a>
             <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-outline-info" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-user" aria-hidden="true"></i> User
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item text-info" href="#"><i class="fa-solid fa-home" aria-hidden="true"></i> Home</a></li>
-                        <li><a class="dropdown-item text-info" href="#"> <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout</a></li>
-                    </ul>
-                </div>
+                <button id="btn_update_excel_link" class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_login">
+                    <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Login
+                </button>
                 <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -220,6 +214,7 @@
     include("includes/modal_upload_attach.php");
     include("includes/modal_upload_bizagi_folder.php");
     include("includes/modal_excel_link.php");
+    include("includes/modal_login.php");
 
     //TOASTS
     include("includes/toast.php");
