@@ -2,3 +2,4 @@ RewriteEngine On
 
 RewriteRule ^home$	home.php	[L]
 RewriteRule ^admin$	admin.php	[L]
+RewriteRule ^users$	users.php	[L]

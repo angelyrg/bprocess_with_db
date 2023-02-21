@@ -1,6 +1,11 @@
+<?php
+session_start();
+if(!isset($_SESSION['login'])){
+    header("Location: home");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,19 +25,9 @@
                 <img src="assets/imgs/bitel.svg" alt="Bitel" class="img-fluid"> <span class="fw-bold">Admin</span>
             </a>
             <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-outline-info" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-user" aria-hidden="true"></i> User
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item text-info" href="#"><i class="fa-solid fa-home" aria-hidden="true"></i> Home</a></li>
-                        <li>
-                            <button class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_logout">
-                                <i class="fa-solid fa-left-to-bracket" aria-hidden="true"></i> Logout
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                <button class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_logout">
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout
+                </button>
                 <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -55,6 +50,7 @@
                     <div class="demo-container">
                         <div class="form">
                             <div class="drive-panel">
+                                <a href="users" class="btn btn-info"><i class="fa-solid fa-users" aria-hidden="true"></i> Users</a>
                                 <div class="drive-header dx-treeview-item">
                                     <div class="dx-treeview-item-content">
                                         <i class="dx-icon dx-icon-activefolder" aria-hidden="true"></i><span>Processes</span>

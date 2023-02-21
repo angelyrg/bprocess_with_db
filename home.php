@@ -17,7 +17,7 @@
     <nav class="navbar navbar-expand-lg my_navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="">
-                <img src="assets/imgs/bitel.svg" alt="Bitel" class="img-fluid"> <span class="fw-bold">Admin</span>
+                <img src="assets/imgs/bitel.svg" alt="Bitel" class="img-fluid"> <span class="fw-bold">Process</span>
             </a>
             <div class="d-flex align-items-center">
                 <button id="btn_update_excel_link" class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_login">

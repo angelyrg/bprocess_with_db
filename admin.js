@@ -202,21 +202,12 @@ $(() => {
   })
 
   //Logout
-  $("#form_login").on('submit', function (e) {
-    e.preventDefault();
+  $("#btn_logout").on('click', function (e) {
     $.ajax({
-      url : "controller/auth/login.php",
+      url : "controller/auth/logout.php",
       method : "POST",
-      data : $("#form_login").serialize(),
-      success: function(resp){
-        if (resp == 0) {
-          //Error in login
-          $("#login_message").attr("class", "text-danger").html("Invalid credentials.Try again <br><br>");
-        }else if(resp == 1) {
-          //Login success
-          $("#login_message").attr("class", "text-success").html("¡Success! <br><br>");
-          $(location).attr('href', "admin.php");
-        }
+      success: function(){
+        $(location).attr('href', "home");
       }
     });
   })

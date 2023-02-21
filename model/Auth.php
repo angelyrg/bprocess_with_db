@@ -18,7 +18,7 @@ class Auth extends Conexion
 
         if ( (count($user_data) > 0 && password_verify($password, $user_data[0]['password'])) ){
             session_start();
-            $_SESSION['user_id'] = $user_data[0]['id'];
+            $_SESSION['login'] = $user_data[0]['id'];
             return true;
         }
         return false;
