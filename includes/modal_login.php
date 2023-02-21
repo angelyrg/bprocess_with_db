@@ -5,7 +5,7 @@
             <div class="modal-header border-0">
                 <button type="button" class="btn-close rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="login.php" method="POST" id="form_login">
+            <form method="POST" id="form_login">
                 <div class="modal-body">
                     <div class="mb-5 text-center">
                         <img src="assets/imgs/bitel.svg" alt="Bitel logo"> Login
@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="text-center">
-                        <small id="login_message" class="text-danger"></small>
+                        <small id="login_message"></small>
                     </div>
 
                     <div class="d-flex justify-content-center">

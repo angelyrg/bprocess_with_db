@@ -26,7 +26,11 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item text-info" href="#"><i class="fa-solid fa-home" aria-hidden="true"></i> Home</a></li>
-                        <li><a class="dropdown-item text-info" href="#"> <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout</a></li>
+                        <li>
+                            <button class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_logout">
+                                <i class="fa-solid fa-left-to-bracket" aria-hidden="true"></i> Logout
+                            </button>
+                        </li>
                     </ul>
                 </div>
                 <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -220,6 +224,7 @@
     include("includes/modal_upload_attach.php");
     include("includes/modal_upload_bizagi_folder.php");
     include("includes/modal_excel_link.php");
+    include("includes/modal_logout.php");
 
     //TOASTS
     include("includes/toast.php");
@@ -231,7 +236,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js" integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="assets/datatables/datatables.min.js"></script>
     <script src="assets/js/upload_bizagi.js"></script>
-    <script src="main.js"></script>
+    <script src="admin.js"></script>
 
 </body>
 

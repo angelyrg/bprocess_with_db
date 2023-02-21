@@ -37,9 +37,6 @@
                 <div class="d-flex justify-content-end my-1">
                     <a href="#" id="btn_expand_tree" class="btn btn-sm btn-outline-light rounded-pill ms-1">Expand all</a>
                     <a href="#" id="btn_collapse_tree" class="btn btn-sm btn-outline-light rounded-pill ms-1">Collapse all</a>
-                    <button type="button" class="btn btn-sm btn-info rounded-pill ms-1" data-bs-toggle="modal" data-bs-target="#modal_new">
-                        <i class="fa-solid fa-plus" aria-hidden="true"></i> New Item
-                    </button>
                 </div>
                 <div class="dx-viewport">
                     <div class="demo-container">
@@ -65,12 +62,6 @@
                             <h4>Welcome to Index Process Admin Page</h4>
                             <!-- Excel -->
                             <div class="container-fluid" id="processes_excel">
-                                <button id="btn_remove_excel_link" class="btn btn-outline-danger btn-sm rounded-pill" onclick="removeExcel()">
-                                    <i class="fa fa-trash" aria-hidden="true"></i> Remove excel
-                                </button>
-                                <button id="btn_update_excel_link" class="btn btn-sm btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_excel_link">
-                                    <i class="fa-solid fa-file-excel" aria-hidden="true"></i> Update excel link
-                                </button>
                                 <iframe src="" class="col-12 d-none" id="excel_viewer" title="Google documents viewer"></iframe>
                             </div>
                         </div>
@@ -87,14 +78,6 @@
                             <div class="d-block">
                                 <p class="text-info fw-bold" id="process_title"></p>
                             </div>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-outline-warning btn-sm rounded-pill" id="btn_modal_edit" data-bs-toggle="modal" data-bs-target="#modal_edit">
-                                <i class="fa-solid fa-pen" aria-hidden="true"></i> Edit this item
-                            </button>
-                            <button type="button" class="btn btn-outline-danger btn-sm rounded-pill" id="btn_modal_delete" data-bs-toggle="modal" data-bs-target="#modal_delete">
-                                <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete
-                            </button>
                         </div>
                     </div>
 
@@ -115,11 +98,6 @@
                                         <div>
                                             <h4 class="text-center my-2">Main PDF file</h4>
                                         </div>
-                                        <div>
-                                            <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_delete_pdf">
-                                                <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete PDF
-                                            </button>
-                                        </div>
                                     </div>
                                     <iframe src="" width="100%" id="pdf_viewer" title="PDF file"></iframe>
                                 </div>
@@ -127,9 +105,6 @@
                                 <div class="text-center d-none" id="no_pdf_viewer">
                                     <img src="assets/imgs/no-file.svg" alt="PDF file not found" class="img-fluid py-5">
                                     <p class="text-dark fw-bolder"><small>PDF file is in process to be sign by BOD.</small></p>
-                                    <button type="button" class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_upload_pdf">
-                                        <i class="fa-solid fa-plus" aria-hidden="true"></i> Upload PDF file
-                                    </button>
                                 </div>
 
                             </div>
@@ -141,11 +116,6 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <div class="text-info my-2">Atachment files</div>
-                                    </div>
-                                    <div>
-                                        <button type="button" class="btn btn-info btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_upload_attach">
-                                            <i class="fa-solid fa-upload" aria-hidden="true"></i> Upload attachment files
-                                        </button>
                                     </div>
                                 </div>
 
@@ -174,14 +144,10 @@
                                             <h4 class="text-center my-2">Bizagi viewer</h4>
                                         </div>
                                         <div>
-                                            <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_delete_bizagi">
-                                                <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Bizagi
-                                            </button>
                                             <a href="" class="btn btn-info btn-sm rounded-pill" target="_blank" id="link_bizagi_diagram" rel="noopener">
                                                 <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Open in Bizagi
                                             </a>
                                         </div>
-
                                     </div>
                                     <iframe src="" width="100%" id="bizagi_viewer" title="Bizagi viewer"></iframe>
                                 </div>
@@ -189,9 +155,6 @@
                                 <div class="text-center d-none" id="no_bizagi_viewer">
                                     <img src="assets/imgs/bizagi_icon.png" alt="Bizagi not found" class="img-fluid my-5" id="bizagi_logo" width="40%">
                                     <p class="text-dark fw-bolder"><small>There is no Bizagi to display</small></p>
-                                    <button type="button" class="btn btn-outline-info rounded-pill" id="btn_upload_bizagi_folder" data-bs-toggle="modal" data-bs-target="#modal_upload_bizagi_folder">
-                                        <i class="fa-solid fa-plus" aria-hidden="true"></i> Upload Bizagi Folder
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -205,15 +168,6 @@
 
     <?php
     //MODALS
-    include("includes/modal_new_item.php");
-    include("includes/modal_edit_item.php");
-    include("includes/modal_delete_item.php");
-    include("includes/modal_delete_pdf.php");
-    include("includes/modal_delete_bizagi.php");
-    include("includes/modal_upload_pdf.php");
-    include("includes/modal_upload_attach.php");
-    include("includes/modal_upload_bizagi_folder.php");
-    include("includes/modal_excel_link.php");
     include("includes/modal_login.php");
 
     //TOASTS
@@ -225,8 +179,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/devextreme/22.2.4/js/dx.all.js" integrity="sha512-aQAJMeqooVJsjLfnQeh5XCKnn8pF+ujBYawvUePQZooZ5PthLF2/bZS1reU+nuGEBYuzrFG1812mxjF09R1T8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js" integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="assets/datatables/datatables.min.js"></script>
-    <script src="assets/js/upload_bizagi.js"></script>
-    <script src="main.js"></script>
+    <script src="home.js"></script>
 
 </body>
 

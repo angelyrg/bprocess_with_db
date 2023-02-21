@@ -6,6 +6,6 @@ $auth = new Auth();
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-echo $auth->login($username, $password) ? "login" : "error";
+echo $auth->login($username, $password) ? 1 : 0;
 
 ?>

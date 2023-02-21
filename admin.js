@@ -201,7 +201,7 @@ $(() => {
     });
   })
 
-  //Login
+  //Logout
   $("#form_login").on('submit', function (e) {
     e.preventDefault();
     $.ajax({
@@ -209,16 +209,17 @@ $(() => {
       method : "POST",
       data : $("#form_login").serialize(),
       success: function(resp){
-        //TO DO: Complete Login System
-        if (resp == "error"){
-          console.log("Esto es un error de login")
-          $("#login_message").html("Username or password incorrect.");
+        if (resp == 0) {
+          //Error in login
+          $("#login_message").attr("class", "text-danger").html("Invalid credentials.Try again <br><br>");
+        }else if(resp == 1) {
+          //Login success
+          $("#login_message").attr("class", "text-success").html("¡Success! <br><br>");
+          $(location).attr('href', "admin.php");
         }
-        //console.log((resp));
       }
     });
   })
-
 
 });
 
@@ -564,7 +565,8 @@ $(() => {
     }
   }
 
-  //Update Excel  wiever
+  //Update Excel
+
   function updateExcelViewer(){
     $.ajax({
       method : "GET",
