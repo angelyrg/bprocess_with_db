@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +23,17 @@
                 <img src="assets/imgs/bitel.svg" alt="Bitel" class="img-fluid"> <span class="fw-bold">Process</span>
             </a>
             <div class="d-flex align-items-center">
-                <button id="btn_update_excel_link" class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_login">
-                    <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Login
-                </button>
+                <?php
+                if(isset($_SESSION['login'])){
+                    ?>
+                    <a href="admin" class="btn btn-outline-info rounded-pill" ><i class="fa-solid fa-gauge" aria-hidden="true"></i> Dashboard</a>
+                    <?php
+                }else{
+                    ?>
+                    <button id="btn_update_excel_link" class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_login">
+                        <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Login
+                    </button>
+                <?php } ?>
                 <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -35,8 +46,9 @@
         <div class="row">
             <div class="col-md-4 col-lg-3 p-2 border border-dark rounded d-md-block sidebar collapse" id="sidebarMenu">
                 <div class="d-flex justify-content-end my-1">
-                    <a href="#" id="btn_expand_tree" class="btn btn-sm btn-outline-light rounded-pill ms-1">Expand all</a>
-                    <a href="#" id="btn_collapse_tree" class="btn btn-sm btn-outline-light rounded-pill ms-1">Collapse all</a>
+                    <button class="btn btn-sm btn-outline-light rounded-pill ms-1" id="btn_toggle_expand">
+                        Expand all
+                    </button>
                 </div>
                 <div class="dx-viewport">
                     <div class="demo-container">
@@ -58,8 +70,10 @@
                 <!-- Home Main info -->
                 <div class="container-fluid d-none" id="process_home">
                     <div class="row">
-                        <div class="col-12 border border-info border rounded-3 py-3">
-                            <h4>Welcome to Index Process Admin Page</h4>
+                        <div class="col-12 py-3 text-center">
+                            <h4>Welcome to Index Process Page</h4>
+                            <p>You will find information about process, its attachement files, bizagi diagram, etc...</p>
+                            <img src="assets/imgs/main_image.webp" class="img-fluid px-md-5 opacity_img" alt="Process image">
                             <!-- Excel -->
                             <div class="container-fluid" id="processes_excel">
                                 <iframe src="" class="col-12 d-none" id="excel_viewer" title="Google documents viewer"></iframe>
@@ -153,7 +167,7 @@
                                 </div>
 
                                 <div class="text-center d-none" id="no_bizagi_viewer">
-                                    <img src="assets/imgs/bizagi_icon.png" alt="Bizagi not found" class="img-fluid my-5" id="bizagi_logo" width="40%">
+                                    <img src="assets/imgs/bizagi_icon.png" alt="Bizagi not found" class="img-fluid my-5 bizagi_logo" width="40%">
                                     <p class="text-dark fw-bolder"><small>There is no Bizagi to display</small></p>
                                 </div>
                             </div>

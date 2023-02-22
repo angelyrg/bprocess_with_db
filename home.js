@@ -1,8 +1,5 @@
 $(() => {
   refreshTreeview();
-  
-  $("#btn_collapse_tree").on("click", () => $("#treeview_content").dxTreeView("collapseAll"));
-  $("#btn_expand_tree").on("click", () => $("#treeview_content").dxTreeView("expandAll"));
 
   const process_id = getIdURL();
 
@@ -37,6 +34,19 @@ $(() => {
     });
   })
 
+  //Togle expand/collapse
+  let expanded = false;
+  $("#btn_toggle_expand").on('click', function(){
+    if (expanded){
+      $("#treeview_content").dxTreeView("collapseAll");
+      expanded = false;
+      $("#btn_toggle_expand").html("Expand all")
+    }else{
+      $("#treeview_content").dxTreeView("expandAll");
+      expanded = true;
+      $("#btn_toggle_expand").html("Collapse all")
+    }
+  });
 
 });
 

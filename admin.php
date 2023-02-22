@@ -21,7 +21,7 @@ if(!isset($_SESSION['login'])){
 <body>
     <nav class="navbar navbar-expand-lg my_navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="">
+            <a class="navbar-brand" href="./">
                 <img src="assets/imgs/bitel.svg" alt="Bitel" class="img-fluid"> <span class="fw-bold">Admin</span>
             </a>
             <div class="d-flex align-items-center">
@@ -39,21 +39,26 @@ if(!isset($_SESSION['login'])){
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4 col-lg-3 p-2 border border-dark rounded d-md-block sidebar collapse" id="sidebarMenu">
-                <div class="d-flex justify-content-end my-1">
-                    <a href="#" id="btn_expand_tree" class="btn btn-sm btn-outline-light rounded-pill ms-1">Expand all</a>
-                    <a href="#" id="btn_collapse_tree" class="btn btn-sm btn-outline-light rounded-pill ms-1">Collapse all</a>
-                    <button type="button" class="btn btn-sm btn-info rounded-pill ms-1" data-bs-toggle="modal" data-bs-target="#modal_new">
-                        <i class="fa-solid fa-plus" aria-hidden="true"></i> New Item
-                    </button>
-                </div>
+
+                <a href="users" class="btn btn-sm btn-outline-light d-block"><i class="fa-solid fa-users" aria-hidden="true"></i> Users</a>
+                <hr>
+                
+                
                 <div class="dx-viewport">
                     <div class="demo-container">
                         <div class="form">
                             <div class="drive-panel">
-                                <a href="users" class="btn btn-info"><i class="fa-solid fa-users" aria-hidden="true"></i> Users</a>
                                 <div class="drive-header dx-treeview-item">
                                     <div class="dx-treeview-item-content">
                                         <i class="dx-icon dx-icon-activefolder" aria-hidden="true"></i><span>Processes</span>
+                                    </div>
+                                    <div class="d-flex justify-content-end my-1">
+                                        <button class="btn btn-sm btn-outline-light rounded-pill ms-1" id="btn_toggle_expand">
+                                            Expand all
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-light rounded-pill ms-1" data-bs-toggle="modal" data-bs-target="#modal_new">
+                                            <i class="fa-solid fa-plus" aria-hidden="true"></i> New Item
+                                        </button>
                                     </div>
                                 </div>
                                 <div id="treeview_content"></div>
@@ -193,7 +198,7 @@ if(!isset($_SESSION['login'])){
                                 </div>
 
                                 <div class="text-center d-none" id="no_bizagi_viewer">
-                                    <img src="assets/imgs/bizagi_icon.png" alt="Bizagi not found" class="img-fluid my-5" id="bizagi_logo" width="40%">
+                                    <img src="assets/imgs/bizagi_icon.png" alt="Bizagi not found" class="img-fluid my-5 bizagi_logo" width="40%">
                                     <p class="text-dark fw-bolder"><small>There is no Bizagi to display</small></p>
                                     <button type="button" class="btn btn-outline-info rounded-pill" id="btn_upload_bizagi_folder" data-bs-toggle="modal" data-bs-target="#modal_upload_bizagi_folder">
                                         <i class="fa-solid fa-plus" aria-hidden="true"></i> Upload Bizagi Folder

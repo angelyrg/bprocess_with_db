@@ -64,7 +64,11 @@ MENU OPTIONS
   background-color: #FFED00;
   color: #4F4F4F;
 }
-  
+
+.resaltado{
+  background-color: rgb(24, 165, 106) !important;
+}
+
 .dx-treeview-node-container-opened {
   border-left: .5px solid white;
   border-radius: 8px;
@@ -102,8 +106,8 @@ INFO DETAILS
   transform: translate(-50%, -50%);
 }
 
-#bizagi_logo{
-  opacity: 0.8;
+.bizagi_logo, .opacity_img{
+  opacity: 0.5;
 }
 
 #pdf_viewer, #bizagi_viewer{
