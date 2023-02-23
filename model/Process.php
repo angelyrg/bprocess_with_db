@@ -27,10 +27,13 @@ class Process extends Conexion
         $query = $this->conexion_db->query("SELECT * FROM processes WHERE id = '$id' ");
         $process = $query->fetch_all(MYSQLI_ASSOC);
 
-        $query = $this->conexion_db->query("SELECT * FROM attached_files WHERE process_id = '$id' ");
+        $query = $this->conexion_db->query("SELECT * FROM attached_files WHERE process_id = '$id' AND file_type='1'");
         $attached[] = $query->fetch_all(MYSQLI_ASSOC);
         
-        return array_map(null, $process, $attached);
+        $query = $this->conexion_db->query("SELECT * FROM attached_files WHERE process_id = '$id' AND file_type='0'");
+        $pdfs[] = $query->fetch_all(MYSQLI_ASSOC);
+        
+        return array_map(null, $process, $attached, $pdfs, ["total_pdf" => $this->countMainFiles($id)]);
 
     }
 
@@ -58,22 +61,16 @@ class Process extends Conexion
         return $this->conexion_db->query($sql);
     }
 
-    public function update_main_file($id, string $file_name)
-    {
-        $sql = "UPDATE processes SET main_file='$file_name' WHERE id = $id";
-        return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
-    }
-
     public function update_bizagi_folder($id, string $bizagi_folder)
     {
         $sql = "UPDATE processes SET bizagi_folder='$bizagi_folder' WHERE id = $id";
         return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
     }
 
-    public function insert_new_record(string $name, bool $isDirectory, $description="", $main_file="", $bizagi_folder=""){
+    public function insert_new_record(string $name, bool $isDirectory, $description="", $bizagi_folder=""){
 
         $icon = $isDirectory ? "folder" :  "textdocument";
-        $sql = "INSERT INTO processes (parentId, name, description, main_file, bizagi_folder, icon, isDirectory) VALUES (NULL, '$name', '$description', '$main_file', '$bizagi_folder','$icon', '$isDirectory') ";
+        $sql = "INSERT INTO processes (parentId, name, description, bizagi_folder, icon, isDirectory) VALUES (NULL, '$name', '$description', '$bizagi_folder','$icon', '$isDirectory') ";
 
         if ($this->conexion_db->query($sql) === TRUE) {
             return $this->conexion_db->insert_id;
@@ -99,22 +96,16 @@ class Process extends Conexion
         return $result->fetch_all(MYSQLI_ASSOC)[0]["bizagi_folder"];
     }
 
-    public function get_main_file_name($id){
-        $result = $this->conexion_db->query("SELECT main_file FROM processes WHERE id='$id' ");
-        return $result->fetch_all(MYSQLI_ASSOC)[0]["main_file"];
-    }
-
-    public function remove_pdf($id)
-    {
-        $sql = "UPDATE processes SET main_file='' WHERE id = $id";
-        return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
-    }
-
     public function remove_bizagi($id)
     {
         $sql = "UPDATE processes SET bizagi_folder='' WHERE id = $id";
         return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
     }
+    
+    function countMainFiles($id){
+        $result = $this->conexion_db->query("SELECT count(*) AS num_att FROM attached_files WHERE process_id='$id' AND file_type='0' ");
+        return (int)$result->fetch_assoc()["num_att"];
+    }    
 
 }
 

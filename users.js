@@ -13,8 +13,10 @@ $(() => {
         data: $("#newuser_form").serialize(),
         success: function(resp){
           console.log(resp);
+          var my_form = document.getElementById("newuser_form");
+          my_form.reset();
+          $("#modal_new_user").modal("hide");
           getUsers();
-          // TO DO: Update users table when one user is added
         }
     })
   });

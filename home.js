@@ -134,16 +134,7 @@ $(() => {
             $('#link_bizagi_diagram').attr("href", "");
           }
 
-          //PDF file viewer
-          if ( process.main_file != ""){
-            $('#no_pdf_viewer').addClass("d-none");
-            $('#pdf_viewer').attr("src", "upload/pdfs/"+process.main_file+"#view=FitH");
-            $('#pdf_viewer_content').removeClass("d-none");
-          }else{
-            $('#no_pdf_viewer').removeClass("d-none");
-            $('#pdf_viewer').attr("src", "");
-            $('#pdf_viewer_content').addClass("d-none");
-          }
+
 
           //Bizagi viewer
           if ( process.bizagi_folder != ""){

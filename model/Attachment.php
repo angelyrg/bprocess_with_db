@@ -17,9 +17,9 @@ class Attachment extends Conexion
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function insert_new(string $attach_name, string $attach_file, $process_id)
+    public function insert_new(string $attach_name, string $attach_file, $file_type, $process_id)
     {
-        $sql = "INSERT INTO attached_files (attach_name, attach_file, process_id) VALUES ('$attach_name', '$attach_file', $process_id)";
+        $sql = "INSERT INTO attached_files (attach_name, attach_file, file_type, process_id) VALUES ('$attach_name', '$attach_file', $file_type, $process_id)";
         if ($this->conexion_db->query($sql) === TRUE) {
             return $this->conexion_db->insert_id;
         } else {
@@ -41,7 +41,6 @@ class Attachment extends Conexion
             return "error";
         }
     }
-    
 
 }
 

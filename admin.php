@@ -92,9 +92,6 @@ if(!isset($_SESSION['login'])){
                 <div class="container-fluid d-none" id="process_info">
                     <div class="d-flex justify-content-between align-items-center my-2 ">
                         <div class="">
-                            <div id="icon_loading" class="spinner-border spinner-border-sm text-secondary d-block visually-hidden" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
                             <div class="d-block">
                                 <p class="text-info fw-bold" id="process_title"></p>
                             </div>
@@ -127,6 +124,9 @@ if(!isset($_SESSION['login'])){
                                             <h4 class="text-center my-2">Main PDF file</h4>
                                         </div>
                                         <div>
+                                            <button type="button" class="btn btn-outline-info btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_upload_attach_pdf">
+                                                <i class="fa-solid fa-plus" aria-hidden="true"></i> Add PDF file
+                                            </button>
                                             <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_delete_pdf">
                                                 <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete PDF
                                             </button>
@@ -137,12 +137,37 @@ if(!isset($_SESSION['login'])){
 
                                 <div class="text-center d-none" id="no_pdf_viewer">
                                     <img src="assets/imgs/no-file.svg" alt="PDF file not found" class="img-fluid py-5">
-                                    <p class="text-dark fw-bolder"><small>PDF file is in process to be sign by BOD.</small></p>
-                                    <button type="button" class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_upload_pdf">
+                                    <p class="text-dark fw-bolder"><small>There is not PDF file</small></p>
+                                    <button type="button" class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_upload_attach_pdf">
                                         <i class="fa-solid fa-plus" aria-hidden="true"></i> Upload PDF file
                                     </button>
                                 </div>
 
+                            </div>
+                            <div class="container pt-0 align-items-center rounded-3 d-none" id="pdf_content_list">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-info my-2">PDF files</div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-outline-info btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_upload_attach_pdf">
+                                            <i class="fa-solid fa-plus" aria-hidden="true"></i> Add PDF file
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive px-0 px-md-5">
+                                    <table class="table" id="pdf_table_id" summary="Attached files">
+                                        <thead>
+                                            <tr>
+                                                <th>N°</th>
+                                                <th>File's name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_pdf_items"></tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
@@ -221,7 +246,7 @@ if(!isset($_SESSION['login'])){
     include("includes/modal_delete_item.php");
     include("includes/modal_delete_pdf.php");
     include("includes/modal_delete_bizagi.php");
-    include("includes/modal_upload_pdf.php");
+    include("includes/modal_upload_attach_pdf.php");
     include("includes/modal_upload_attach.php");
     include("includes/modal_upload_bizagi_folder.php");
     include("includes/modal_excel_link.php");

@@ -3,6 +3,7 @@ require '../../model/Attachment.php';
 $att = new Attachment();
 
 $process_id = $_POST["process_id_attach"];
+$file_type = $_POST["file_type"];
 $files_post = $_FILES["attach_files"];
 $files_keys = array_keys($files_post);
 
@@ -22,8 +23,11 @@ for ($i=0; $i < $files_lenght; $i++) {
     }
 }
 
+$upload_flag = false;
+
 //Foreach new array, move and save in DB
 foreach ($files as $fileID => $value) {
+    $upload_flag = false;
     $fileName = $value['tmp_name'];
     $file_content = file_get_contents($fileName);
 
@@ -32,10 +36,10 @@ foreach ($files as $fileID => $value) {
 
     //If file was moved into server, save info in DB
     if (file_put_contents($attachFolder . $newFileName, $file_content)){
-        $att->insert_new($value['name'], $newFileName, $process_id);
+        $att->insert_new($value['name'], $newFileName, $file_type, $process_id);
+        $upload_flag = true;
     }
-
 }
 
 //Return Process ID
-echo $process_id;
+echo $upload_flag ? $process_id : '0';
