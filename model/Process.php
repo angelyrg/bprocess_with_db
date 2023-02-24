@@ -67,10 +67,10 @@ class Process extends Conexion
         return ($this->conexion_db->query($sql) === TRUE) ? $id : "error";
     }
 
-    public function insert_new_record(string $name, bool $isDirectory, $description="", $bizagi_folder=""){
+    public function insert_new_record(string $name, bool $isDirectory, $created_by, $description="", $bizagi_folder=""){
 
         $icon = $isDirectory ? "folder" :  "textdocument";
-        $sql = "INSERT INTO processes (parentId, name, description, bizagi_folder, icon, isDirectory) VALUES (NULL, '$name', '$description', '$bizagi_folder','$icon', '$isDirectory') ";
+        $sql = "INSERT INTO processes (parentId, name, description, bizagi_folder, icon, isDirectory, created_by) VALUES (NULL, '$name', '$description', '$bizagi_folder','$icon', '$isDirectory', '$created_by') ";
 
         if ($this->conexion_db->query($sql) === TRUE) {
             return $this->conexion_db->insert_id;

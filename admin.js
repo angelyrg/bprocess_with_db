@@ -8,7 +8,7 @@ $(() => {
     $("#process_home").addClass("d-none");
     updateContent( process_id );
   }else{
-    console.log("Invalid url");
+    console.log("Invalid id");
     updateExcelViewer()
     $("#process_home").removeClass("d-none");
     $("#process_info").addClass("d-none");
@@ -23,14 +23,15 @@ $(() => {
         type: 'POST',
         data: $("#newitem_form").serialize(),
         success: function(resp){
-          if (resp != "error"){
-            let just_added_id = parseInt(resp);
-
+          let just_added_id = parseInt(resp);
+          if (just_added_id > 0){
             setIdURL(just_added_id);            
             refreshTreeview();
             hideModal('#modal_new', 'newitem_form');
             updateContent(just_added_id);
-            showToast('liveToast', "New record saved successfully!");
+            showToast('liveToast', "#toastSuccessMessage", "New record saved successfully!");
+          }else{
+            showToast('liveToastError', "#toastErrorMessage", "Could not add the new record.");
           }
         }
     })
@@ -44,12 +45,14 @@ $(() => {
         type: 'POST',
         data: $("#edit_item_form").serialize(),
         success: function(resp){
-          if (resp != "error"){
-            let just_updated_id = parseInt(resp);          
+          let just_updated_id = parseInt(resp);
+          if (just_updated_id > 0){
             refreshTreeview();
             hideModal('#modal_edit', 'edit_item_form');
             updateContent(just_updated_id);
-            showToast('liveToast', "Updated successfully!");
+            showToast('liveToast', "#toastSuccessMessage", "Updated successfully!");
+          }else{
+            showToast('liveToastError', "#toastErrorMessage", "Could not update the record. Try again.");
           }
         }
     })
@@ -63,12 +66,21 @@ $(() => {
         type: 'POST',
         data: $("#delete_item_form").serialize(),
         success: function(resp){
-          if (resp != "error"){
-            let just_deleted_parent_id = parseInt(resp);          
+          console.log(resp);
+          let just_deleted_parent_id = parseInt(resp);
+          if (just_deleted_parent_id > 0){
             refreshTreeview();
+            setIdURL(just_deleted_parent_id)
             hideModal('#modal_delete', 'delete_item_form');
             updateContent(just_deleted_parent_id);
-            showToast('liveToast', "Deleted successfully!");
+            showToast('liveToast', "#toastSuccessMessage", "Deleted successfully!");
+          }else if (just_deleted_parent_id == 0){
+            console.log("parent 0: " + just_deleted_parent_id);            
+            $(location).attr('href', "admin");
+            showToast('liveToast', "#toastSuccessMessage", "Deleted successfully!");
+          }else{
+            hideModal('#modal_delete', 'delete_item_form');
+            showToast('liveToastError', "#toastErrorMessage", "Could not delete the record.");
           }
         }
     })
@@ -90,7 +102,7 @@ $(() => {
       success: function(resp){
         hideModal('#modal_upload_attach_pdf', 'form_attach_pdf');
         updateContent(resp);
-        showToast('liveToast', "PDF file uploaded successfully!");
+        showToast('liveToast', "#toastSuccessMessage", "PDF file uploaded successfully!");
       },
       complete: function(resp){
         $("#btn_save_attach").html(`<i class="fa fa-upload" aria-hidden="true"></i> Upload PDF`);
@@ -114,7 +126,7 @@ $(() => {
             refreshTreeview();
             hideModal('#modal_delete_pdf', 'delete_pdf_form');
             updateContent(just_deleted_parent_id);
-            showToast('liveToast', "PDF file deleted successfully!");
+            showToast('liveToast', "#toastSuccessMessage", "PDF file deleted successfully!");
           }
         },
         complete: function(){
@@ -139,7 +151,7 @@ $(() => {
             refreshTreeview();
             hideModal('#modal_delete_bizagi', 'delete_bizagi_form');
             updateContent(just_deleted_parent_id);
-            showToast('liveToast', "Bizagi deleted successfully!");
+            showToast('liveToast', "#toastSuccessMessage", "Bizagi deleted successfully!");
           }
         },
         complete: function(){
@@ -166,7 +178,7 @@ $(() => {
         console.log(typeof(resp))
         hideModal('#modal_upload_attach', 'form_attach');
         updateContent(resp);
-        showToast('liveToast', "Attachment files uploaded successfully!");
+        showToast('liveToast', "#toastSuccessMessage", "Attachment files uploaded successfully!");
       },
       complete: function(resp){
         $("#btn_save_attach").html(`<i class="fa fa-upload" aria-hidden="true"></i> Upload files`);
@@ -186,7 +198,7 @@ $(() => {
           $("#excel_modal_text").removeClass("text-danger").html("");
           $("#excel_viewer").removeClass("d-none");
           hideModal('#modal_excel_link', 'excel_form');
-          showToast('liveToast', "Excel link updated successfully!");
+          showToast('liveToast', "#toastSuccessMessage", "Excel link updated successfully!");
           updateExcelViewer();
         }else if (resp === "invalid link"){
           $("#excel_modal_text").addClass("text-danger").html(`Invalid link.<br>Please make sure your link has been obtained from Google Docs: File/Share/Publish to web/Link`);
@@ -402,7 +414,7 @@ $(() => {
       url : "controller/process/process.sort.php",
       data : {idfrom, idto},
       success: function(){
-        showToast('liveToast', "Item moved successfuly");
+        showToast('liveToast', "#toastSuccessMessage", "Item moved successfuly");
       }
     });    
   }
@@ -413,6 +425,12 @@ $(() => {
 
   //update main content
   function updateContent(id){
+    //TO DO: No update if id is invalid
+    if (id>0){
+      console.log("Valid");
+    }else{
+      console.log("Invalid");
+    }
     let icon_spiner = `<div id="icon_loading" class="spinner-border spinner-border-sm text-secondary d-block visually-hidden" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>`;
@@ -427,16 +445,13 @@ $(() => {
         $("#process_title").html(icon_spiner);
       },
       success: function(resp){
-        let all_data = JSON.parse(resp)[0];
-        
+        let all_data = JSON.parse(resp)[0];        
 
         if ( all_data.length > 0){
           let process = all_data[0];
           let attached = all_data[1];
           let pdfs = all_data[2];
           let total_pdf = all_data[3];
-
-          console.log("total pdf: " + total_pdf);
           
           //Hide welcome display and show process info
           $("#process_info").removeClass("d-none");
@@ -512,10 +527,6 @@ $(() => {
             $('#pdf_table_id').DataTable();
           }
 
-
-
-
-
           //Bizagi viewer
           if ( process.bizagi_folder != ""){
             $('#bizagi_viewer').attr("src", `upload/bizagi/${process.bizagi_folder}/index.html`);
@@ -553,9 +564,6 @@ $(() => {
         }else{
           console.log("Invalid id");
         }
-      },
-      complete: function() {
-        $("#icon_loading").addClass("visually-hidden");
       }
     });
   }
@@ -581,9 +589,9 @@ $(() => {
   }
 
   //Display Toast
-  function showToast(toastId, message){
+  function showToast(toastId, messageSelector, message){
     var toastLive = document.getElementById(toastId)
-    $("#toastSuccesMessage").html(message);
+    $(messageSelector).html(message);
     var toast = new bootstrap.Toast(toastLive)
     toast.show()
   }
@@ -608,7 +616,7 @@ $(() => {
         success: function(resp){
           if (resp != "error"){
             $("#att-"+id).remove();
-            showToast('liveToast', "Attached file deleted successfully!");
+            showToast('liveToast', "#toastSuccessMessage", "Attached file deleted successfully!");
           }
         }
       })
@@ -639,7 +647,7 @@ $(() => {
         url: 'controller/excel/excel.destroy.php',
         success: function(resp){
           if (resp === "removed"){
-            showToast('liveToast', "Excel link removed successfully!");
+            showToast('liveToast', "#toastSuccessMessage", "Excel link removed successfully!");
             updateExcelViewer();
           }
         }
