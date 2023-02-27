@@ -425,7 +425,7 @@ $(() => {
 
   //update main content
   function updateContent(id){
-    //TO DO: No update if id is invalid
+    //TO DO: Don't allow update if id is invalid
     if (id>0){
       console.log("Valid");
     }else{

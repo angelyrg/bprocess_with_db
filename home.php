@@ -73,7 +73,7 @@ session_start();
                         <div class="col-12 py-3 text-center">
                             <h4>Welcome to Index Process Page</h4>
                             <p>You will find information about process, its attachement files, bizagi diagram, etc...</p>
-                            <img src="assets/imgs/main_image.webp" class="img-fluid px-md-5 opacity_img" alt="Process image">
+                            <!-- <img src="assets/imgs/main_image.webp" class="img-fluid px-md-5 opacity_img" alt="Process image"> -->
                             <!-- Excel -->
                             <div class="container-fluid" id="processes_excel">
                                 <iframe src="" class="col-12 d-none" id="excel_viewer" title="Google documents viewer"></iframe>

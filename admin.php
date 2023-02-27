@@ -26,7 +26,7 @@ if(!isset($_SESSION['login'])){
             </a>
             <div class="d-flex align-items-center">
                 <button class="btn btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modal_logout">
-                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout <?php echo $_SESSION['login']; ?>
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout
                 </button>
                 <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
