@@ -16,10 +16,11 @@ MENU OPTIONS
 */
 #sidebarMenu {
   background: radial-gradient(50% 330.61% at 0% 100%, #00A5B1 0%, #007687 100%);
-  min-height: 90vh;
+  height: 90vh;
   padding: 20px;
   padding-left: 30px;
   color: #ffffff;
+  overflow-y: scroll;
 }
 
 /* Treeview */

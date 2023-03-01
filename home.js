@@ -1,35 +1,26 @@
 $(() => {
-  refreshTreeview();
-
+  
   const process_id = getIdURL();
-
+  refreshTreeview(process_id);
+  
   if (process_id > 0){
     $("#process_info").removeClass("d-none");
     $("#process_home").addClass("d-none");
     updateContent( process_id );
   }else{
-    console.log("Invalid url");
+    console.log("Invalid id");
     updateExcelViewer()
     $("#process_home").removeClass("d-none");
     $("#process_info").addClass("d-none");
   }
 
-  //Login
-  $("#form_login").on('submit', function (e) {
-    e.preventDefault();
+  //Logout
+  $("#btn_logout").on('click', function (e) {
     $.ajax({
-      url : "controller/auth/login.php",
+      url : "controller/auth/logout.php",
       method : "POST",
-      data : $("#form_login").serialize(),
-      success: function(resp){
-        if (resp == 0) {
-          //Error in login
-          $("#login_message").attr("class", "text-danger").html("Invalid credentials.Try again <br><br>");
-        }else if(resp == 1) {
-          //Login success
-          $("#login_message").attr("class", "text-success").html("¡Success! <br><br>");
-          $(location).attr('href', "admin.php");
-        }
+      success: function(){
+        $(location).attr('href', "home");
       }
     });
   })
@@ -56,8 +47,7 @@ $(() => {
         dataStructure: 'plain',
         displayExpr: 'name',
         keyExpr: "id",
-        parentIdExpr: "parentId",
-    
+        parentIdExpr: "parentId",    
         searchEnabled: true,
         searchMode: "contains",
         searchExpr: ["name", "description"],
@@ -76,33 +66,37 @@ $(() => {
     });
   }
 
-  //Refresh treeview with updated data
-  function refreshTreeview(){
-    fetch("controller/process/process.index.php")
-    .then(resp => resp.json())
-    .then((data)=>{
-        createTreeView('#treeview_content', data);
-    });
-  }
 
   //update main content
   function updateContent(id){
+    //TO DO: Don't allow update if id is invalid
+    if (id>0){
+      console.log("Valid");
+    }else{
+      console.log("Invalid");
+    }
+    let icon_spiner = `<div id="icon_loading" class="spinner-border spinner-border-sm text-secondary d-block visually-hidden" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>`;
     $.ajax({
       method : "GET",
       url : "controller/process/process.show.php",
       data : {id},
       beforeSend: function(){
-        $("#icon_loading").removeClass("visually-hidden");
+        $("#process_title").html(icon_spiner);
       },
       error: function(){
-        $("#icon_loading").addClass("visually-hidden");
+        $("#process_title").html(icon_spiner);
       },
       success: function(resp){
-        let all_data = JSON.parse(resp)[0];
+        let all_data = JSON.parse(resp)[0];        
+
         if ( all_data.length > 0){
           let process = all_data[0];
           let attached = all_data[1];
-
+          let pdfs = all_data[2];
+          let total_pdf = all_data[3];
+          
           //Hide welcome display and show process info
           $("#process_info").removeClass("d-none");
           $("#process_home").addClass("d-none");
@@ -120,6 +114,7 @@ $(() => {
           $('#pdf_process_id').val(process.id);
           $('#id_delete_parent').val(process.parentId);
           $('#process_id_attach').val(process.id);
+          $('#process_id_attach_pdf').val(process.id);
           $('#process_id_bizagi').val(process.id);
           
           $("#id_process_delete_pdf").val(process.id);
@@ -134,7 +129,47 @@ $(() => {
             $('#link_bizagi_diagram').attr("href", "");
           }
 
+          //PDF file viewer
+          if (total_pdf == 0){
+            $("#pdf_content_list").addClass("d-none");
+            $('#pdf_content').removeClass("d-none");
 
+            $('#no_pdf_viewer').removeClass("d-none");
+            $('#pdf_viewer').attr("src", "");
+            $('#pdf_viewer_content').addClass("d-none");
+          }else if(total_pdf == 1){
+            $("#pdf_content_list").addClass("d-none");
+            $('#pdf_content').removeClass("d-none");
+            $('#no_pdf_viewer').addClass("d-none");
+            $('#pdf_viewer').attr("src", "upload/attach/"+pdfs[0].attach_file+"#view=FitH");
+            $('#pdf_viewer_content').removeClass("d-none");
+          }else{
+            //Show table form
+            $('#pdf_content').removeClass("d-none");
+            $('#pdf_content').addClass("d-none");
+            $("#pdf_content_list").removeClass("d-none")
+            let all_pdfs = ``;    
+            let c = 0;      
+            pdfs.forEach(element => {
+              all_pdfs += `
+                <tr id="att-${element.id}">
+                  <td>${++c}</td>
+                  <td>${element.attach_name}</td>
+                  <td>
+                      <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="deleteAttached(${element.id})">
+                          <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete
+                      </button>
+                      <a href="upload/attach/${element.attach_file}" class="btn btn-sm btn-outline-dark rounded-pill" download>
+                          <i class="fa-solid fa-download" aria-hidden="true"></i> Download
+                      </a>
+                  </td>
+                </tr>
+              `;
+            });
+
+            $("#table_pdf_items").html(all_pdfs);
+            $('#pdf_table_id').DataTable();
+          }
 
           //Bizagi viewer
           if ( process.bizagi_folder != ""){
@@ -173,9 +208,6 @@ $(() => {
         }else{
           console.log("Invalid id");
         }
-      },
-      complete: function() {
-        $("#icon_loading").addClass("visually-hidden");
       }
     });
   }
@@ -193,7 +225,36 @@ $(() => {
     window.history.pushState({},"", url_path + '#' + id)
   }
 
-  //Update Excel  wiever
+  //Hide modal
+  function hideModal(modalSelector, formId){
+    var my_form = document.getElementById(formId);
+    my_form.reset();
+    $(modalSelector).modal("hide");
+  }
+
+  //Display Toast
+  function showToast(toastId, messageSelector, message){
+    var toastLive = document.getElementById(toastId)
+    $(messageSelector).html(message);
+    var toast = new bootstrap.Toast(toastLive)
+    toast.show()
+  }
+
+  //Refresh treeview with updated data
+  function refreshTreeview(id=0){
+    fetch("controller/process/process.index.php")
+    .then(resp => resp.json())
+    .then((data)=>{
+        Object.values(data).forEach(val => {
+          if (val['id'] == id){
+            val.expanded = true
+          }
+        });
+        createTreeView('#treeview_content', data);
+    });
+  }
+
+  //Update Excel
   function updateExcelViewer(){
     $.ajax({
       method : "GET",

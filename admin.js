@@ -1,8 +1,8 @@
 $(() => {
-  refreshTreeview();
-
+  
   const process_id = getIdURL();
-
+  refreshTreeview(process_id);
+  
   if (process_id > 0){
     $("#process_info").removeClass("d-none");
     $("#process_home").addClass("d-none");
@@ -26,7 +26,7 @@ $(() => {
           let just_added_id = parseInt(resp);
           if (just_added_id > 0){
             setIdURL(just_added_id);            
-            refreshTreeview();
+            refreshTreeview(just_added_id);
             hideModal('#modal_new', 'newitem_form');
             updateContent(just_added_id);
             showToast('liveToast', "#toastSuccessMessage", "New record saved successfully!");
@@ -47,7 +47,7 @@ $(() => {
         success: function(resp){
           let just_updated_id = parseInt(resp);
           if (just_updated_id > 0){
-            refreshTreeview();
+            refreshTreeview(just_updated_id);
             hideModal('#modal_edit', 'edit_item_form');
             updateContent(just_updated_id);
             showToast('liveToast', "#toastSuccessMessage", "Updated successfully!");
@@ -69,7 +69,7 @@ $(() => {
           console.log(resp);
           let just_deleted_parent_id = parseInt(resp);
           if (just_deleted_parent_id > 0){
-            refreshTreeview();
+            refreshTreeview(just_deleted_parent_id);
             setIdURL(just_deleted_parent_id)
             hideModal('#modal_delete', 'delete_item_form');
             updateContent(just_deleted_parent_id);
@@ -122,8 +122,7 @@ $(() => {
         },
         success: function(resp){
           if (resp != "error"){
-            let just_deleted_parent_id = parseInt(resp);          
-            refreshTreeview();
+            let just_deleted_parent_id = parseInt(resp);
             hideModal('#modal_delete_pdf', 'delete_pdf_form');
             updateContent(just_deleted_parent_id);
             showToast('liveToast', "#toastSuccessMessage", "PDF file deleted successfully!");
@@ -147,8 +146,7 @@ $(() => {
         },
         success: function(resp){
           if (resp != "error"){
-            let just_deleted_parent_id = parseInt(resp);          
-            refreshTreeview();
+            let just_deleted_parent_id = parseInt(resp);
             hideModal('#modal_delete_bizagi', 'delete_bizagi_form');
             updateContent(just_deleted_parent_id);
             showToast('liveToast', "#toastSuccessMessage", "Bizagi deleted successfully!");
@@ -242,8 +240,7 @@ $(() => {
         dataStructure: 'plain',
         displayExpr: 'name',
         keyExpr: "id",
-        parentIdExpr: "parentId",
-    
+        parentIdExpr: "parentId",    
         searchEnabled: true,
         searchMode: "contains",
         searchExpr: ["name", "description"],
@@ -426,11 +423,7 @@ $(() => {
   //update main content
   function updateContent(id){
     //TO DO: Don't allow update if id is invalid
-    if (id>0){
-      console.log("Valid");
-    }else{
-      console.log("Invalid");
-    }
+
     let icon_spiner = `<div id="icon_loading" class="spinner-border spinner-border-sm text-secondary d-block visually-hidden" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>`;
@@ -597,10 +590,16 @@ $(() => {
   }
 
   //Refresh treeview with updated data
-  function refreshTreeview(){
+  function refreshTreeview(id=0){
     fetch("controller/process/process.index.php")
     .then(resp => resp.json())
     .then((data)=>{
+        Object.values(data).forEach(val => {
+          if (val['id'] == id){
+            val.expanded = true
+          }
+        });
+
         createTreeView('#treeview_content', data);
         createSortable('#treeview_content', data);
     });

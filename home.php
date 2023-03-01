@@ -118,9 +118,29 @@ session_start();
 
                                 <div class="text-center d-none" id="no_pdf_viewer">
                                     <img src="assets/imgs/no-file.svg" alt="PDF file not found" class="img-fluid py-5">
-                                    <p class="text-dark fw-bolder"><small>PDF file is in process to be sign by BOD.</small></p>
+                                    <p class="text-dark fw-bolder"><small>There is not PDF file</small></p>
                                 </div>
 
+                            </div>
+                            <div class="container pt-0 align-items-center rounded-3 d-none" id="pdf_content_list">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-info my-2">PDF files</div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive px-0 px-md-5">
+                                    <table class="table" id="pdf_table_id" summary="Attached files">
+                                        <thead>
+                                            <tr>
+                                                <th>N°</th>
+                                                <th>File's name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_pdf_items"></tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
